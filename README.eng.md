@@ -1,5 +1,8 @@
 # Project Analysis: "STEM Information Portal for High Schools by FPT University"
 
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.eng.md)
+[![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.md)
+
 ## 1. Project Objectives:
 - **Build an online learning platform for STEM (Science, Technology, Engineering, Mathematics)**: Help students easily and effectively access STEM knowledge.
 - **Support teaching and learning**: Provide materials, lectures, and tools to assist teachers and students in teaching and learning.
