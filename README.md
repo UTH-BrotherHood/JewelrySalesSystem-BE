@@ -44,7 +44,6 @@
 - **Thống kê:**
   - Cung cấp các báo cáo thống kê về doanh thu, lợi nhuận, khách hàng, nhân viên,...
   - Hiển thị dashboard trực quan để theo dõi tình hình kinh doanh.
-  - 
 ## 4. Lợi ích mang lại:
 - Tối ưu hóa quy trình bán hàng, mua lại và quản lý hàng hóa.
 - Nâng cao hiệu quả hoạt động của cửa hàng.
