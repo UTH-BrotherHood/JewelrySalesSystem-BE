@@ -1,6 +1,6 @@
 # Jewelry Sales System At The Store - Jewelry Sales Management Software at the Store
 
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.eng.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/dev/README.eng.md)
 [![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.md)
 
 ## 1. Project Goals:
