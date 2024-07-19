@@ -5,7 +5,7 @@
 
 ## 1. Mục tiêu dự án:
 - Phát triển phần mềm quản lý bán hàng trang sức chuyên nghiệp cho cửa hàng trang sức có nhiều quầy hàng.
-- Nâng cao hiệu quả hoạt động bán hàng, quản lý hàng hóa, khách hàng và nhân viên.https://github.com/UTH-BrotherHood/JewelrySalesSystem
+- Nâng cao hiệu quả hoạt động bán hàng, quản lý hàng hóa, khách hàng và nhân viên.
 - Tăng doanh thu và lợi nhuận cho cửa hàng.
 - Cung cấp trải nghiệm mua sắm tốt nhất cho khách hàng.
 
