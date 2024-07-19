@@ -1,6 +1,6 @@
 # Jewelry Sales System At The Store - Phần mềm bán hàng trang sức tại cửa hàng
 
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/dev/README.eng.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.eng.md)
 [![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/dev/README.md)
 
 ## 1. Mục tiêu dự án:
