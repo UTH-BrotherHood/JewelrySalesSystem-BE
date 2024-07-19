@@ -1,7 +1,7 @@
 # Jewelry Sales System At The Store - Phần mềm bán hàng trang sức tại cửa hàng
 
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.eng.md)
-[![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/dev/README.md)
+[![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.md)
 
 ## 1. Mục tiêu dự án:
 - Phát triển phần mềm quản lý bán hàng trang sức chuyên nghiệp cho cửa hàng trang sức có nhiều quầy hàng.
