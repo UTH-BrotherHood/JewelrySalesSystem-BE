@@ -1,4 +1,4 @@
-# Phân tích Dự án "Cổng thông tin STEM cho trường THPT của Trường ĐH FPT"
+# Jewelry Sales System At The Store - Phần mềm bán hàng trang sức tại cửa hàng
 
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.eng.md)
 [![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.md)
