@@ -1,7 +1,7 @@
 # Phân tích Dự án "Cổng thông tin STEM cho trường THPT của Trường ĐH FPT"
 
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.eng.md)
-[![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/StemInformationPortal/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/main/README.eng.md)
+[![pt-br](https://img.shields.io/badge/lang-vi-red.svg)](https://github.com/UTH-BrotherHood/JewelrySalesSystem/blob/dev/README.md)
 
 ## 1. Mục tiêu dự án:
 - **Xây dựng nền tảng học tập trực tuyến về STEM (Science, Technology, Engineering, Mathematics)**: Giúp học sinh tiếp cận với kiến thức STEM một cách dễ dàng và hiệu quả.
