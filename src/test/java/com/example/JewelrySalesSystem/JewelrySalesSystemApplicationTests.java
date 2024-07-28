@@ -1,4 +1,4 @@
-package com.clementHoang.Jewelry_Sales_System;
+package com.example.JewelrySalesSystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
