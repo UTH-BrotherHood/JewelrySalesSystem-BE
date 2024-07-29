@@ -7,23 +7,25 @@ import jakarta.validation.constraints.Size;
 
 public class UserCreationRequest {
 
-    @NotBlank(message = "Username cannot be blank")
+    @NotBlank(message = "USERNAME_INVALID")
+    @Size(min = 4, message = "USERNAME_INVALID")
     private String username;
 
-    @Size(min = 8, max = 15, message = "Password must be between 8 and 15 characters")
+    @Size(min = 8, max = 15, message = "PASSWORD_INVALID")
     private String password;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "EMAIL_INVALID")
+    @NotBlank(message = "EMAIL_INVALID")
     private String email;
 
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "PHONE_INVALID")
     private String phone;
 
-    @NotBlank(message = "Address cannot be blank")
+    @NotBlank(message = "ADDRESS_INVALID")
     private String address;
 
     private Integer rewardPoints;
+
 
     public String getUsername() {
         return username;
