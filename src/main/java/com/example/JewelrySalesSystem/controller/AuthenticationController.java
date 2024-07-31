@@ -1,0 +1,2 @@
+package com.example.JewelrySalesSystem.controller;public class AuthenticationController {
+}
