@@ -5,33 +5,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>JewelrySalesSystem</artifactId>
+	<groupId>com.devteria</groupId>
+	<artifactId>identity-service</artifactId>
+	<name>identity-service</name>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>JewelrySalesSystem</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>Identity service</description>
 	<properties>
-		<java.version>22</java.version>
-		<mapstruct.version>1.5.3.Final</mapstruct.version>
-		<projectlombok-lombok.version>1.18.26</projectlombok-lombok.version>
+		<java.version>21</java.version>
+		<projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,6 +31,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -68,6 +58,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -115,4 +106,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

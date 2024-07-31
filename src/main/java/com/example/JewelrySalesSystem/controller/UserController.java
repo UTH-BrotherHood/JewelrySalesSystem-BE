@@ -3,6 +3,7 @@ package com.example.JewelrySalesSystem.controller;
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.UserCreationRequest;
 import com.example.JewelrySalesSystem.dto.request.UserUpdateRequest;
+import com.example.JewelrySalesSystem.dto.response.UserResponse;
 import com.example.JewelrySalesSystem.entity.User;
 import com.example.JewelrySalesSystem.service.UserService;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class UserController {
     public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
         ApiResponse<User> apiResponse = new ApiResponse<>();
         User createdUser = userService.createUser(request);
-        apiResponse.setCode(201); // Assuming 201 for created
+        apiResponse.setCode(201);
         apiResponse.setMessage("User created successfully");
         apiResponse.setResult(createdUser);
         return apiResponse;
@@ -39,9 +40,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<User> getUser(@PathVariable("userId") String userId) {
-        ApiResponse<User> apiResponse = new ApiResponse<>();
-        User user = userService.getUser(userId);
+    public ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        UserResponse user = userService.getUser(userId);
         apiResponse.setCode(200);
         apiResponse.setMessage("User retrieved successfully");
         apiResponse.setResult(user);
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
+    public ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
         ApiResponse<User> apiResponse = new ApiResponse<>();
         User updatedUser = userService.updateUser(userId, request);
         apiResponse.setCode(200);
