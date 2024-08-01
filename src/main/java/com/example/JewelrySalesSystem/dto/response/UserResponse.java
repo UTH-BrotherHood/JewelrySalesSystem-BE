@@ -20,6 +20,4 @@ public class UserResponse {
     String phone;
     String address;
     Integer rewardPoints;
-
-
 }
