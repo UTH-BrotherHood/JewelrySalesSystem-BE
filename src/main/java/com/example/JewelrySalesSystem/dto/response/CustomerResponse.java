@@ -1,23 +1,22 @@
 package com.example.JewelrySalesSystem.dto.response;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class CustomerResponse {
     String id;
-    String username;
-    String password;
+    String customername;
     String email;
     String phone;
     String address;
     Integer rewardPoints;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

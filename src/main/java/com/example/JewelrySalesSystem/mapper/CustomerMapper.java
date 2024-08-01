@@ -8,10 +8,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper
-public interface UserMapper {
-    Customer toUser(CustomerCreationRequest request);
+public interface CustomerMapper {
+    Customer toCustomer(CustomerCreationRequest request);
 
-    CustomerResponse toUserResponse(Customer customer);
+    CustomerResponse toCustomerResponse(Customer customer);
 
-    void updateUser(@MappingTarget Customer customer, CustomerUpdateRequest request);
+    void updateCustomer(@MappingTarget Customer customer, CustomerUpdateRequest request);
 }
+
+

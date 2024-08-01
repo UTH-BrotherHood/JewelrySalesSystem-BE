@@ -1,13 +1,13 @@
 package com.example.JewelrySalesSystem.service;
 
-import com.example.JewelrySalesSystem.dto.request.UserCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.UserUpdateRequest;
-import com.example.JewelrySalesSystem.dto.response.UserResponse;
-import com.example.JewelrySalesSystem.entity.User;
+import com.example.JewelrySalesSystem.dto.request.CustomerCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerUpdateRequest;
+import com.example.JewelrySalesSystem.dto.response.CustomerResponse;
+import com.example.JewelrySalesSystem.entity.Customer;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
-import com.example.JewelrySalesSystem.mapper.UserMapper;
-import com.example.JewelrySalesSystem.repository.UserRepository;
+import com.example.JewelrySalesSystem.mapper.CustomerMapper;
+import com.example.JewelrySalesSystem.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,44 +16,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class CustomerService {
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
     @Autowired
-    private UserMapper userMapper;
+    private CustomerMapper customerMapper;
 
-    public User createUser(UserCreationRequest request) {
-
-        if (userRepository.existsByUsername(request.getUsername()))
+    public Customer createCustomer(CustomerCreationRequest request) {
+        if (customerRepository.existsBycustomername(request.getCustomername()))
             throw new AppException(ErrorCode.USER_EXISTED);
 
-        User user = userMapper.toUser(request);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        Customer customer = customerMapper.toCustomer(request);
 
-        return userRepository.save(user);
+        return customerRepository.save(customer);
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<Customer> getCustomers() {
+        return customerRepository.findAll();
     }
 
-    public UserResponse getUser(String id) {
-        return userMapper.toUserResponse(userRepository.findById(id)
+    public CustomerResponse getCustomer(String id) {
+        return customerMapper.toCustomerResponse(customerRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
-    public User updateUser(String userId, UserUpdateRequest request) {
-        User user = userRepository.findById(userId)
+    public Customer updateCustomer(String customerId, CustomerUpdateRequest request) {
+        Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        userMapper.updateUser(user, request);
-        return userRepository.save(user);
+        customerMapper.updateCustomer(customer, request);
+        return customerRepository.save(customer);
     }
 
-    public void deleteUser(String userId) {
-        if (!userRepository.existsById(userId)) {
+    public void deleteCustomer(String customerId) {
+        if (!customerRepository.existsById(customerId)) {
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
-        userRepository.deleteById(userId);
+        customerRepository.deleteById(customerId);
     }
 }
