@@ -12,6 +12,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(400, "Password must be between 8 and 15 characters"),
     EMAIL_INVALID(400, "Email should be valid"),
     PHONE_INVALID(400, "Phone number is invalid"),
+    UNAUTHENTICATED(400, "Unauthenticated"),
     ADDRESS_INVALID(400, "Address cannot be blank"),
 
     // Product-related errors
@@ -23,6 +24,7 @@ public enum ErrorCode {
     INVALID_PRODUCT_PRICE(400, "Product price is invalid"),
     INVALID_PRODUCT_WEIGHT(400, "Product weight is invalid"),
     INVALID_PRODUCT_STOCK(400, "Product stock quantity is invalid");
+
 
     private final int code;
     private final String message;

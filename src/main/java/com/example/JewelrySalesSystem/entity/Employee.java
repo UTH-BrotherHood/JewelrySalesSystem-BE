@@ -32,7 +32,7 @@ public class Employee {
     @Builder.Default
     String role = "Employee";
 
-    @Column(nullable = false)
+    @Column(name = "phone_number", nullable = false)
     String phoneNumber;
 
     @CreationTimestamp
@@ -42,4 +42,6 @@ public class Employee {
     @UpdateTimestamp
     @Column(nullable = false)
     LocalDateTime updatedAt;
+
+
 }

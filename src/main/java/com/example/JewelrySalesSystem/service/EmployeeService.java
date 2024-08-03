@@ -28,7 +28,8 @@ public class EmployeeService {
         Employee employee = employeeMapper.toEmployee(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
-        employee.setRole("Employee");
+        employee.setRole(request.getRole());
+        employee.setPhoneNumber(request.getPhoneNumber());
 
         return employeeRepository.save(employee);
     }
@@ -49,6 +50,7 @@ public class EmployeeService {
         employee.setUsername(request.getUsername());
         employee.setRole(request.getRole());
         employee.setPassword(new BCryptPasswordEncoder(10).encode(request.getPassword()));
+        employee.setPhoneNumber(request.getPhoneNumber()); // Cập nhật phoneNumber
         return employeeRepository.save(employee);
     }
 

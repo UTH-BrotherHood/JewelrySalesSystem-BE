@@ -6,11 +6,13 @@ server:
 spring:
   datasource:
     url: "jdbc:mysql://localhost:3306/jewelry"
-    username : root
-    password: password
-
+    username: root
+    password: 30122004
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+jwt:
+  signerKey: "csmtYZldbUGTyhzXVuNr4b3UM3JdbdGx3CRYju7Jr2IXJ52o7mmSA8ZWrYTXYWNM"
