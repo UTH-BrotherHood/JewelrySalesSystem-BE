@@ -22,7 +22,12 @@ public enum ErrorCode {
     INVALID_PRODUCT_DESCRIPTION(400, "Product description is invalid"),
     INVALID_PRODUCT_PRICE(400, "Product price is invalid"),
     INVALID_PRODUCT_WEIGHT(400, "Product weight is invalid"),
-    INVALID_PRODUCT_STOCK(400, "Product stock quantity is invalid");
+    INVALID_PRODUCT_STOCK(400, "Product stock quantity is invalid"),
+
+    //Promotion errors
+    PROMOTION_NOT_FOUND(404,"Promotion not found"),
+    // Statistics errors
+    STATISTICS_NOT_FOUND(404,"Statics not found");
 
     private final int code;
     private final String message;
