@@ -12,6 +12,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(400, "Password must be between 8 and 15 characters"),
     EMAIL_INVALID(400, "Email should be valid"),
     PHONE_INVALID(400, "Phone number is invalid"),
+    UNAUTHENTICATED(400, "Unauthenticated"),
     ADDRESS_INVALID(400, "Address cannot be blank"),
 
     // Product-related errors
@@ -28,6 +29,7 @@ public enum ErrorCode {
     PROMOTION_NOT_FOUND(404,"Promotion not found"),
     // Statistics errors
     STATISTICS_NOT_FOUND(404,"Statics not found");
+
 
     private final int code;
     private final String message;
