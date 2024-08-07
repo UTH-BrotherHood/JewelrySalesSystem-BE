@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer productId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String productId;
 
-    Integer categoryId;
+    String categoryId;
 
     @Column(nullable = false)
     String name;

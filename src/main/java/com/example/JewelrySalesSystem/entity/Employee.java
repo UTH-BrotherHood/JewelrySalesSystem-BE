@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -16,8 +17,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer employeeId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String employeeId;
 
     @Column(nullable = false)
     String name;
@@ -28,9 +29,8 @@ public class Employee {
     @Column(nullable = false)
     String password;
 
-    @Column(nullable = false)
-    @Builder.Default
-    String role = "Employee";
+
+    Set<String> roles;
 
     @Column(name = "phone_number", nullable = false)
     String phoneNumber;

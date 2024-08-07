@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -11,10 +12,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeResponse {
-    Integer employeeId;
+    String employeeId;
     String name;
     String username;
-    String role;
+    Set<String> roles;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

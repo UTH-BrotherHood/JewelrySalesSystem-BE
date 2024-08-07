@@ -23,14 +23,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Integer productId, ProductUpdateRequest request) {
+    public Product updateProduct(String productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
         productMapper.updateProduct(product, request);
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Integer productId) {
+    public void deleteProduct(String productId) {
         if (!productRepository.existsById(productId)) {
             throw new AppException(ErrorCode.PRODUCT_NOT_FOUND);
         }
@@ -41,7 +41,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Product getProduct(Integer productId) {
+    public Product getProduct(String productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
     }

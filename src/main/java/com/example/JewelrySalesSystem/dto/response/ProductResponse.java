@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
-    Integer productId;
-    Integer categoryId;
+    String productId;
+    String categoryId;
     String name;
     String description;
     BigDecimal costPrice;

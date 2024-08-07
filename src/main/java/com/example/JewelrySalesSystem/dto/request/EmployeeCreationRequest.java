@@ -21,9 +21,6 @@ public class EmployeeCreationRequest {
     @NotBlank(message = "PASSWORD_INVALID")
     String password;
 
-    @NotBlank(message = "ROLE_INVALID")
-    String role;
-
     @NotBlank(message = "PHONE_NUMBER_INVALID")
     String phoneNumber;
 }
