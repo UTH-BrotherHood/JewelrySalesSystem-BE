@@ -35,7 +35,7 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder.encode("admin"))
                         .phoneNumber("012344566")
                         .name("admin")
-                         .roles(roles)
+//                         .roles(roles)
                         .build();
 
                 employeeRepository.save(user);

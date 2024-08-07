@@ -29,8 +29,8 @@ public class Employee {
     @Column(nullable = false)
     String password;
 
-
-    Set<String> roles;
+    @ManyToMany
+    Set<Role> roles;
 
     @Column(name = "phone_number", nullable = false)
     String phoneNumber;

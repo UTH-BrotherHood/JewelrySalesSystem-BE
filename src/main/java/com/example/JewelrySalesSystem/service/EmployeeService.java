@@ -40,7 +40,7 @@ public class EmployeeService {
 
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.EMPLOYEE.name());
-        employee.setRoles(roles);
+//        employee.setRoles(roles);
 
         employee.setPhoneNumber(request.getPhoneNumber());
 
