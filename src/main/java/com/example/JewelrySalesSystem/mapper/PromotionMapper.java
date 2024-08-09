@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.mapper;
 
-import com.example.JewelrySalesSystem.dto.request.PromotionCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.PromotionUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.PromotionRequests.PromotionCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.PromotionRequests.PromotionUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.PromotionResponse;
 import com.example.JewelrySalesSystem.entity.Promotion;
 import org.mapstruct.Mapper;

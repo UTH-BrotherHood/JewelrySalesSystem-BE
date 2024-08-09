@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.mapper;
 
-import com.example.JewelrySalesSystem.dto.request.CustomerCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.CustomerUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CustomerResponse;
 import com.example.JewelrySalesSystem.entity.Customer;
 import org.mapstruct.Mapper;

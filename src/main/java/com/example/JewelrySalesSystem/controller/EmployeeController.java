@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
-import com.example.JewelrySalesSystem.dto.request.EmployeeCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.service.EmployeeService;

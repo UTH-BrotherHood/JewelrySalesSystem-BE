@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Promotion {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer promotionId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String promotionId;
 
     @Column(nullable = false)
     String promotionDescription;

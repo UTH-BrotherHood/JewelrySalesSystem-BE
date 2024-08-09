@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.service;
 
-import com.example.JewelrySalesSystem.dto.request.ProductCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.ProductUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductUpdateRequest;
 import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;

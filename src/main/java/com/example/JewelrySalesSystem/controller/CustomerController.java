@@ -1,8 +1,8 @@
 package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
-import com.example.JewelrySalesSystem.dto.request.CustomerCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.CustomerUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CustomerResponse;
 import com.example.JewelrySalesSystem.entity.Customer;
 import com.example.JewelrySalesSystem.service.CustomerService;
@@ -68,4 +68,8 @@ public class CustomerController {
         apiResponse.setResult("Customer has been deleted");
         return apiResponse;
     }
+
+
+
+
 }

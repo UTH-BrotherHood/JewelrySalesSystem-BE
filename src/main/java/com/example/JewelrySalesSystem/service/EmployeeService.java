@@ -1,6 +1,6 @@
 package com.example.JewelrySalesSystem.service;
 
-import com.example.JewelrySalesSystem.dto.request.EmployeeCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.enums.Role;
@@ -11,7 +11,6 @@ import com.example.JewelrySalesSystem.repository.EmployeeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;

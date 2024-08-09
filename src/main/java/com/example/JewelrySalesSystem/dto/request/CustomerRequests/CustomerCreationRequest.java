@@ -1,4 +1,4 @@
-package com.example.JewelrySalesSystem.dto.request;
+package com.example.JewelrySalesSystem.dto.request.CustomerRequests;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

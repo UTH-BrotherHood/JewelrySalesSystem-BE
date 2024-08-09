@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Statistics {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer statisticId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String statisticId;
 
     @Column(nullable = false)
     String reportType;

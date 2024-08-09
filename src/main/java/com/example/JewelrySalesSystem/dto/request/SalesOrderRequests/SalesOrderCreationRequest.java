@@ -1,4 +1,4 @@
-package com.example.JewelrySalesSystem.dto.request;
+package com.example.JewelrySalesSystem.dto.request.SalesOrderRequests;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

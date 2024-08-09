@@ -1,4 +1,4 @@
-package com.example.JewelrySalesSystem.dto.request;
+package com.example.JewelrySalesSystem.dto.request.CategoryRequests;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

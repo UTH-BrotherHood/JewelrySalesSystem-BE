@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,6 +18,8 @@ public class CustomerResponse {
     String phone;
     String address;
     Integer rewardPoints;
+
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+
 }

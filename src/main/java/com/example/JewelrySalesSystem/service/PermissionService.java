@@ -1,6 +1,6 @@
 package com.example.JewelrySalesSystem.service;
 
-import com.example.JewelrySalesSystem.dto.request.PermissionRequest;
+import com.example.JewelrySalesSystem.dto.request.PermissionRequests.PermissionRequest;
 import com.example.JewelrySalesSystem.dto.response.PermissionResponse;
 import com.example.JewelrySalesSystem.entity.Permission;
 import com.example.JewelrySalesSystem.mapper.PermissionMapper;

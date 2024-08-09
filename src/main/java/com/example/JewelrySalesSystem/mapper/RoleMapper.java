@@ -1,6 +1,6 @@
 package com.example.JewelrySalesSystem.mapper;
 
-import com.example.JewelrySalesSystem.dto.request.RoleRequest;
+import com.example.JewelrySalesSystem.dto.request.RoleRequests.RoleRequest;
 import com.example.JewelrySalesSystem.dto.response.RoleResponse;
 import com.example.JewelrySalesSystem.entity.Role;
 import org.mapstruct.Mapper;

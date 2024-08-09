@@ -7,6 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -17,12 +20,14 @@ import java.time.LocalDateTime;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    String customerId;
     String customername;
     String email;
     String phone;
     String address;
     Integer rewardPoints;
+
+
 
     @CreationTimestamp
     LocalDateTime createdAt;

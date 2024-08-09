@@ -1,4 +1,4 @@
-package com.example.JewelrySalesSystem.dto.request;
+package com.example.JewelrySalesSystem.dto.request.EmployeeRequests;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

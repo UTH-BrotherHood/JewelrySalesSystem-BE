@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.service;
 
-import com.example.JewelrySalesSystem.dto.request.CustomerCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.CustomerUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.CustomerRequests.CustomerUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CustomerResponse;
 import com.example.JewelrySalesSystem.entity.Customer;
 import com.example.JewelrySalesSystem.exception.AppException;
@@ -11,9 +11,6 @@ import com.example.JewelrySalesSystem.repository.CustomerRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,8 +35,8 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public CustomerResponse getCustomer(String id) {
-        return customerMapper.toCustomerResponse(customerRepository.findById(id)
+    public CustomerResponse getCustomer(String customerId) {
+        return customerMapper.toCustomerResponse(customerRepository.findById(customerId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 

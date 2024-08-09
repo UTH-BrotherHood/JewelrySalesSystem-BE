@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.mapper;
 
-import com.example.JewelrySalesSystem.dto.request.StatisticsCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.StatisticsUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.StatisticsResponse;
 import com.example.JewelrySalesSystem.entity.Statistics;
 import org.mapstruct.Mapper;

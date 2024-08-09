@@ -1,8 +1,8 @@
 package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
-import com.example.JewelrySalesSystem.dto.request.ProductCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.ProductUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.ProductResponse;
 import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.service.ProductService;
