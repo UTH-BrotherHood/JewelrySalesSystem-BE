@@ -1,6 +1,6 @@
 package com.example.JewelrySalesSystem.service;
-import com.example.JewelrySalesSystem.dto.request.StatisticsCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.StatisticsUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.StatisticsResponse;
 import com.example.JewelrySalesSystem.entity.Statistics;
 import com.example.JewelrySalesSystem.exception.AppException;
@@ -24,7 +24,7 @@ public class StatisticsService {
         return statisticsMapper.toStatisticsResponse(savedStatistics);
     }
 
-    public StatisticsResponse updateStatistics(Integer statisticId, StatisticsUpdateRequest request) {
+    public StatisticsResponse updateStatistics(String statisticId, StatisticsUpdateRequest request) {
         Statistics statistics = statisticsRepository.findById(statisticId)
                 .orElseThrow(() -> new AppException(ErrorCode.STATISTICS_NOT_FOUND));
         statisticsMapper.updateStatistics(statistics, request);
@@ -32,14 +32,14 @@ public class StatisticsService {
         return statisticsMapper.toStatisticsResponse(updatedStatistics);
     }
 
-    public void deleteStatistics(Integer statisticId) {
+    public void deleteStatistics(String statisticId) {
         if (!statisticsRepository.existsById(statisticId)) {
             throw new AppException(ErrorCode.STATISTICS_NOT_FOUND);
         }
         statisticsRepository.deleteById(statisticId);
     }
 
-    public StatisticsResponse getStatistics(Integer statisticId) {
+    public StatisticsResponse getStatistics(String statisticId) {
         Statistics statistics = statisticsRepository.findById(statisticId)
                 .orElseThrow(() -> new AppException(ErrorCode.STATISTICS_NOT_FOUND));
         return statisticsMapper.toStatisticsResponse(statistics);

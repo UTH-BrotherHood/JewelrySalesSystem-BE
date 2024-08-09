@@ -1,8 +1,8 @@
 package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
-import com.example.JewelrySalesSystem.dto.request.ProductCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.ProductUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.ProductResponse;
 import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.service.ProductService;
@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ApiResponse<Product> updateProduct(@PathVariable Integer productId, @RequestBody ProductUpdateRequest request) {
+    public ApiResponse<Product> updateProduct(@PathVariable String productId, @RequestBody ProductUpdateRequest request) {
         Product product = productService.updateProduct(productId, request);
         return ApiResponse.<Product>builder()
                 .code(200)
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public ApiResponse<String> deleteProduct(@PathVariable Integer productId) {
+    public ApiResponse<String> deleteProduct(@PathVariable String productId) {
         productService.deleteProduct(productId);
         return ApiResponse.<String>builder()
                 .code(200)
@@ -58,7 +58,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ApiResponse<ProductResponse> getProduct(@PathVariable Integer productId) {
+    public ApiResponse<ProductResponse> getProduct(@PathVariable String productId) {
         Product product = productService.getProduct(productId);
         return ApiResponse.<ProductResponse>builder()
                 .code(200)

@@ -1,0 +1,18 @@
+package com.example.JewelrySalesSystem.dto.request.PromotionRequests;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PromotionUpdateRequest {
+    String promotionDescription;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
+    BigDecimal discountPercentage;
+}

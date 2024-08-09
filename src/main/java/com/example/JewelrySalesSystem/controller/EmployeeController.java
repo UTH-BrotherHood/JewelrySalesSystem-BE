@@ -1,7 +1,7 @@
 package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
-import com.example.JewelrySalesSystem.dto.request.EmployeeCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.service.EmployeeService;
@@ -37,8 +37,15 @@ public class EmployeeController {
         return apiResponse;
     }
 
+    @GetMapping("/myInfo")
+    ApiResponse<EmployeeResponse> getMyInfo(){
+        return ApiResponse.<EmployeeResponse>builder()
+                .result(employeeService.getMyInfo())
+                .build();
+    }
+
     @GetMapping("/{employeeId}")
-    public ApiResponse<EmployeeResponse> getEmployee(@PathVariable("employeeId") Integer employeeId) {
+    public ApiResponse<EmployeeResponse> getEmployee(@PathVariable("employeeId") String employeeId) {
         ApiResponse<EmployeeResponse> apiResponse = new ApiResponse<>();
         EmployeeResponse employee = employeeService.getEmployee(employeeId);
         apiResponse.setCode(200);
@@ -48,7 +55,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public ApiResponse<Employee> updateEmployee(@PathVariable Integer employeeId, @RequestBody @Valid EmployeeCreationRequest request) {
+    public ApiResponse<Employee> updateEmployee(@PathVariable String employeeId, @RequestBody @Valid EmployeeCreationRequest request) {
         ApiResponse<Employee> apiResponse = new ApiResponse<>();
         Employee updatedEmployee = employeeService.updateEmployee(employeeId, request);
         apiResponse.setCode(200);
@@ -58,7 +65,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeId}")
-    public ApiResponse<String> deleteEmployee(@PathVariable Integer employeeId) {
+    public ApiResponse<String> deleteEmployee(@PathVariable String employeeId) {
         ApiResponse<String> apiResponse = new ApiResponse<>();
         employeeService.deleteEmployee(employeeId);
         apiResponse.setCode(200);

@@ -1,6 +1,6 @@
 package com.example.JewelrySalesSystem.service;
-import com.example.JewelrySalesSystem.dto.request.PromotionCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.PromotionUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.PromotionRequests.PromotionCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.PromotionRequests.PromotionUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.PromotionResponse;
 import com.example.JewelrySalesSystem.entity.Promotion;
 import com.example.JewelrySalesSystem.exception.AppException;
@@ -24,7 +24,7 @@ public class PromotionService {
         return promotionMapper.toPromotionResponse(savedPromotion);
     }
 
-    public PromotionResponse updatePromotion(Integer promotionId, PromotionUpdateRequest request) {
+    public PromotionResponse updatePromotion(String promotionId, PromotionUpdateRequest request) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
         promotionMapper.updatePromotion(promotion, request);
@@ -32,14 +32,14 @@ public class PromotionService {
         return promotionMapper.toPromotionResponse(updatedPromotion);
     }
 
-    public void deletePromotion(Integer promotionId) {
+    public void deletePromotion(String promotionId) {
         if (!promotionRepository.existsById(promotionId)) {
             throw new AppException(ErrorCode.PROMOTION_NOT_FOUND);
         }
         promotionRepository.deleteById(promotionId);
     }
 
-    public PromotionResponse getPromotion(Integer promotionId) {
+    public PromotionResponse getPromotion(String promotionId) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
         return promotionMapper.toPromotionResponse(promotion);

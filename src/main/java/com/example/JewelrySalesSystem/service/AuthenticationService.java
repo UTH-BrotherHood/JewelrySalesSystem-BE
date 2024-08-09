@@ -4,6 +4,7 @@ import com.example.JewelrySalesSystem.dto.request.AuthenticationRequest;
 import com.example.JewelrySalesSystem.dto.request.IntrospectRequest;
 import com.example.JewelrySalesSystem.dto.response.AuthenticationResponse;
 import com.example.JewelrySalesSystem.dto.response.IntrospectResponse;
+import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.repository.EmployeeRepository;
@@ -20,11 +21,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Date;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +68,7 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
         }
 
-        var token = generateToken(request.getUsername(), String.valueOf(user.getEmployeeId()));
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -72,16 +76,17 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String generateToken(String username, String employeeId) {
+    private String generateToken(Employee employee) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(employee.getUsername())
                 .issuer("jewelryStore")
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("employeeID", employeeId)
+                .claim("employeeID", employee.getEmployeeId())
+                .claim("scope", buildScope(employee))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -94,5 +99,12 @@ public class AuthenticationService {
         } catch (JOSEException e) {
             throw new RuntimeException("Error signing the token", e);
         }
+    }
+
+    private String buildScope(Employee employee) {
+        StringJoiner stringJoiner = new StringJoiner("");
+        if(!CollectionUtils.isEmpty(employee.getRoles()));
+//            employee.getRoles().forEach(stringJoiner::add);
+        return stringJoiner.toString();
     }
 }

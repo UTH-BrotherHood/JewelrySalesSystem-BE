@@ -1,4 +1,4 @@
-package com.example.JewelrySalesSystem.dto.request;
+package com.example.JewelrySalesSystem.dto.request.EmployeeRequests;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,9 +20,6 @@ public class EmployeeCreationRequest {
 
     @NotBlank(message = "PASSWORD_INVALID")
     String password;
-
-    @NotBlank(message = "ROLE_INVALID")
-    String role;
 
     @NotBlank(message = "PHONE_NUMBER_INVALID")
     String phoneNumber;
