@@ -10,13 +10,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductCreationRequest {
-    Integer categoryId;
-    String name;
-    String description;
-    BigDecimal costPrice;
-    BigDecimal weight;
-    BigDecimal laborCost;
-    BigDecimal stoneCost;
-    Integer stockQuantity;
+public class SalesOrderDetailUpdateRequest {
+    String orderId;
+    String productId;
+    Integer quantity;
+    BigDecimal unitPrice;
+    BigDecimal totalPrice;
 }
