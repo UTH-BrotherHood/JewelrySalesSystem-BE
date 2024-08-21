@@ -19,39 +19,56 @@ public class PromotionController {
     private final PromotionService promotionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PromotionResponse>> createPromotion(@RequestBody PromotionCreationRequest request) {
+    public ApiResponse<PromotionResponse> createPromotion(@RequestBody PromotionCreationRequest request) {
+        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>();
         PromotionResponse response = promotionService.createPromotion(request);
-        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>(201, "Promotion created successfully", response);
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Promotion created successfully");
+        apiResponse.setResult(response);
+        return apiResponse;
     }
 
     @PutMapping("/{promotionId}")
-    public ResponseEntity<ApiResponse<PromotionResponse>> updatePromotion(
+    public ApiResponse<PromotionResponse> updatePromotion(
             @PathVariable String promotionId,
             @RequestBody PromotionUpdateRequest request) {
+        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>();
         PromotionResponse response = promotionService.updatePromotion(promotionId, request);
-        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>(200, "Promotion updated successfully", response);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Promotion updated successfully");
+        apiResponse.setResult(response);
+        return apiResponse;
     }
 
     @DeleteMapping("/{promotionId}")
-    public ResponseEntity<ApiResponse<Void>> deletePromotion(@PathVariable String promotionId) {
+    public ApiResponse<String> deletePromotion(@PathVariable String promotionId) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
         promotionService.deletePromotion(promotionId);
-        ApiResponse<Void> apiResponse = new ApiResponse<>(204, "Promotion deleted successfully", null);
-        return ResponseEntity.noContent().build();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Promotion deleted successfully");
+        apiResponse.setResult("Promotion has been deleted");
+        return apiResponse;
     }
 
     @GetMapping("/{promotionId}")
-    public ResponseEntity<ApiResponse<PromotionResponse>> getPromotion(@PathVariable String promotionId) {
+    public ApiResponse<PromotionResponse> getPromotion(@PathVariable String promotionId) {
+        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>();
         PromotionResponse response = promotionService.getPromotion(promotionId);
-        ApiResponse<PromotionResponse> apiResponse = new ApiResponse<>(200, "Promotion retrieved successfully", response);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Promotion retrieved successfully");
+        apiResponse.setResult(response);
+        return apiResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<PromotionResponse>>> getPromotions(Pageable pageable) {
+    public ApiResponse<Page<PromotionResponse>> getPromotions(Pageable pageable) {
+        ApiResponse<Page<PromotionResponse>> apiResponse = new ApiResponse<>();
         Page<PromotionResponse> promotions = promotionService.getPromotions(pageable);
-        ApiResponse<Page<PromotionResponse>> apiResponse = new ApiResponse<>(200, "Promotions retrieved successfully", promotions);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Promotions retrieved successfully");
+        apiResponse.setResult(promotions);
+        return apiResponse;
     }
+
+
 }

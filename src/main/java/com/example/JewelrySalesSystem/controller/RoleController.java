@@ -23,23 +23,33 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<RoleResponse>> create(@RequestBody RoleRequest request) {
+    public ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
+        ApiResponse<RoleResponse> apiResponse = new ApiResponse<>();
         RoleResponse response = roleService.create(request);
-        ApiResponse<RoleResponse> apiResponse = new ApiResponse<>(201, "Role created successfully", response);
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Role created successfully");
+        apiResponse.setResult(response);
+        return apiResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<RoleResponse>>> getAll() {
+    public ApiResponse<List<RoleResponse>> getAll() {
+        ApiResponse<List<RoleResponse>> apiResponse = new ApiResponse<>();
         List<RoleResponse> roles = roleService.getAll();
-        ApiResponse<List<RoleResponse>> apiResponse = new ApiResponse<>(200, "Roles retrieved successfully", roles);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Roles retrieved successfully");
+        apiResponse.setResult(roles);
+        return apiResponse;
     }
 
     @DeleteMapping("/{role}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String role) {
+    public ApiResponse<Void> delete(@PathVariable String role) {
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
         roleService.delete(role);
-        ApiResponse<Void> apiResponse = new ApiResponse<>(204, "Role deleted successfully", null);
-        return ResponseEntity.noContent().build();
+        apiResponse.setCode(204);
+        apiResponse.setMessage("Role deleted successfully");
+        apiResponse.setResult(null);
+        return apiResponse;
     }
+
 }

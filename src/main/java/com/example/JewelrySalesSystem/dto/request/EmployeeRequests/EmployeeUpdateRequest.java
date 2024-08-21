@@ -3,6 +3,8 @@ package com.example.JewelrySalesSystem.dto.request.EmployeeRequests;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -11,6 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class EmployeeUpdateRequest {
     String name;
     String username;
-    String password; // Chỉ cần nếu muốn cập nhật mật khẩu
     String phoneNumber;
+    List<String> roles;
 }

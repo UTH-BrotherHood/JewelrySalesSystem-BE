@@ -20,62 +20,86 @@ public class SalesOrderController {
     private final SalesOrderService salesOrderService;
 
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<ApiResponse<Page<SalesOrderResponse>>> getSalesOrdersByEmployeeId(
+    public ApiResponse<Page<SalesOrderResponse>> getSalesOrdersByEmployeeId(
             @PathVariable String employeeId, Pageable pageable) {
         Page<SalesOrderResponse> salesOrders = salesOrderService.getSalesOrdersByEmployeeId(employeeId, pageable);
-        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>(200, "Sales orders retrieved successfully", salesOrders);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales orders retrieved successfully");
+        apiResponse.setResult(salesOrders);
+        return apiResponse;
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<ApiResponse<Page<SalesOrderResponse>>> getSalesOrdersByCustomerId(
+    public ApiResponse<Page<SalesOrderResponse>> getSalesOrdersByCustomerId(
             @PathVariable String customerId, Pageable pageable) {
         Page<SalesOrderResponse> salesOrders = salesOrderService.getSalesOrdersByCustomerId(customerId, pageable);
-        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>(200, "Sales orders retrieved successfully", salesOrders);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales orders retrieved successfully");
+        apiResponse.setResult(salesOrders);
+        return apiResponse;
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<SalesOrderResponse>> createSalesOrder(@RequestBody SalesOrderCreationRequest request) {
         SalesOrderResponse salesOrderResponse = salesOrderService.createSalesOrder(request);
-        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>(201, "Sales order created successfully", salesOrderResponse);
+        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Sales order created successfully");
+        apiResponse.setResult(salesOrderResponse);
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<ApiResponse<SalesOrderResponse>> updateSalesOrder(
+    public ApiResponse<SalesOrderResponse> updateSalesOrder(
             @PathVariable String orderId,
             @RequestBody SalesOrderUpdateRequest request) {
         SalesOrderResponse salesOrderResponse = salesOrderService.updateSalesOrder(orderId, request);
-        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>(200, "Sales order updated successfully", salesOrderResponse);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales order updated successfully");
+        apiResponse.setResult(salesOrderResponse);
+        return apiResponse;
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<ApiResponse<Void>> deleteSalesOrder(@PathVariable String orderId) {
+    public ApiResponse<Void> deleteSalesOrder(@PathVariable String orderId) {
         salesOrderService.deleteSalesOrder(orderId);
-        ApiResponse<Void> apiResponse = new ApiResponse<>(204, "Sales order deleted successfully", null);
-        return ResponseEntity.noContent().build();
+        ApiResponse<Void> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(204);
+        apiResponse.setMessage("Sales order deleted successfully");
+        apiResponse.setResult(null);
+        return apiResponse;
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<ApiResponse<SalesOrderResponse>> getSalesOrder(@PathVariable String orderId) {
+    public ApiResponse<SalesOrderResponse> getSalesOrder(@PathVariable String orderId) {
         SalesOrderResponse salesOrderResponse = salesOrderService.getSalesOrder(orderId);
-        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>(200, "Sales order retrieved successfully", salesOrderResponse);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales order retrieved successfully");
+        apiResponse.setResult(salesOrderResponse);
+        return apiResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<SalesOrderResponse>>> getSalesOrders(Pageable pageable) {
+    public ApiResponse<Page<SalesOrderResponse>> getSalesOrders(Pageable pageable) {
         Page<SalesOrderResponse> salesOrders = salesOrderService.getSalesOrders(pageable);
-        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>(200, "Sales orders retrieved successfully", salesOrders);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<Page<SalesOrderResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales orders retrieved successfully");
+        apiResponse.setResult(salesOrders);
+        return apiResponse;
     }
 
     @GetMapping("/{orderId}/details")
-    public ResponseEntity<ApiResponse<SalesOrderWithDetailsResponse>> getSalesOrderWithDetails(@PathVariable String orderId) {
+    public ApiResponse<SalesOrderWithDetailsResponse> getSalesOrderWithDetails(@PathVariable String orderId) {
         SalesOrderWithDetailsResponse salesOrderWithDetailsResponse = salesOrderService.getSalesOrderWithDetails(orderId);
-        ApiResponse<SalesOrderWithDetailsResponse> apiResponse = new ApiResponse<>(200, "Sales order with details retrieved successfully", salesOrderWithDetailsResponse);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse<SalesOrderWithDetailsResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Sales order with details retrieved successfully");
+        apiResponse.setResult(salesOrderWithDetailsResponse);
+        return apiResponse;
     }
 }

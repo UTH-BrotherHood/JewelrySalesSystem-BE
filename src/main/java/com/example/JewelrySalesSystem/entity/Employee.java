@@ -21,7 +21,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.UUID)
     String employeeId;
 
-    @Column(nullable = false)
+
     String name;
 
     @Column(nullable = false, unique = true)
@@ -33,10 +33,11 @@ public class Employee {
     @ManyToMany
     Set<Role> roles;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column( nullable = false)
     String phoneNumber;
 
-
+    @OneToMany
+    Set<SalesOrder> salesOrders;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

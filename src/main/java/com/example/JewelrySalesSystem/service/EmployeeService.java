@@ -1,13 +1,17 @@
 package com.example.JewelrySalesSystem.service;
 
+import com.example.JewelrySalesSystem.constant.PredefinedRole;
 import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
-import com.example.JewelrySalesSystem.enums.Role;
+
+import com.example.JewelrySalesSystem.entity.Role;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.EmployeeMapper;
 import com.example.JewelrySalesSystem.repository.EmployeeRepository;
+import com.example.JewelrySalesSystem.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,23 +32,37 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private EmployeeMapper employeeMapper;
     private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepository;
+
 
     public Employee createEmployee(EmployeeCreationRequest request) {
-        if (employeeRepository.existsByUsername(request.getUsername()))
+        // Check if the username already exists
+        if (employeeRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
+        }
 
+        // Map the request to the Employee entity
         Employee employee = employeeMapper.toEmployee(request);
 
+        // Encode the password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.EMPLOYEE.name());
-//        employee.setRoles(roles);
+        // Retrieve the EMPLOYEE role from the RoleRepository
+        Role employeeRole = roleRepository.findByName(PredefinedRole.EMPLOYEE_ROLE)
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
+        // Assign the EMPLOYEE role to the new employee
+        var roles = new HashSet<Role>();
+        roles.add(employeeRole);
+        employee.setRoles(roles);
+
+        // Set the phone number
         employee.setPhoneNumber(request.getPhoneNumber());
 
+        // Save and return the employee
         return employeeRepository.save(employee);
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<Employee> getEmployees() {
@@ -56,7 +74,7 @@ public class EmployeeService {
         return employeeMapper.toEmployeeResponse(employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-
+    @PreAuthorize("hasAuthority('REJECT_POST')")
     public EmployeeResponse getMyInfo(){
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
@@ -67,15 +85,15 @@ public class EmployeeService {
         return employeeMapper.toEmployeeResponse(employee);
     }
 
-    public Employee updateEmployee(String employeeId, EmployeeCreationRequest request) {
+    public EmployeeResponse updateEmployee(String employeeId, EmployeeUpdateRequest request) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        employee.setName(request.getName());
-        employee.setUsername(request.getUsername());
+        employeeMapper.updateEmployee(employee, request);
 
-        employee.setPassword(new BCryptPasswordEncoder(10).encode(request.getPassword()));
-        employee.setPhoneNumber(request.getPhoneNumber());
-        return employeeRepository.save(employee);
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        employee.setRoles(new HashSet<>(roles));
+        return employeeMapper.toEmployeeResponse(employeeRepository.save(employee));
     }
 
     public void deleteEmployee(String employeeId) {

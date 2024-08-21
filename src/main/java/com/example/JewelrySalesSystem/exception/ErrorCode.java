@@ -6,6 +6,7 @@ public enum ErrorCode {
     // General Errors
     UNCATEGORIZED_EXCEPTION(100, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(400, "Invalid validation key", HttpStatus.BAD_REQUEST),
+    INVALID_INPUT(400, "Invalid validation INVALID_INPUT", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(401, "Unauthorized", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, "You do not have permission", HttpStatus.FORBIDDEN),
 
@@ -106,7 +107,9 @@ public enum ErrorCode {
     // Statistics Errors
     INVALID_REPORT_TYPE(400, "Report type is required", HttpStatus.BAD_REQUEST),
     INVALID_REPORT_DATE(400, "Report date is required", HttpStatus.BAD_REQUEST),
-    INVALID_DATA(400, "Data is required", HttpStatus.BAD_REQUEST);
+    INVALID_DATA(400, "Data is required", HttpStatus.BAD_REQUEST),
+
+    ROLE_NOT_FOUND(400, "ROLE NOT FOUND",HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

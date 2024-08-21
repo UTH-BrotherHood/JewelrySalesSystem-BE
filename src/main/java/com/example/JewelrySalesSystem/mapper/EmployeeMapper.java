@@ -6,6 +6,7 @@ import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.entity.Role;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.Set;
@@ -17,11 +18,12 @@ public interface EmployeeMapper {
 
     EmployeeResponse toEmployeeResponse(Employee employee);
 
+    @Mapping(target = "roles", ignore = true)
     void updateEmployee(@MappingTarget Employee employee, EmployeeUpdateRequest request);
 
-    default Set<String> mapRolesToStrings(Set<Role> roles) {
-        return roles.stream()
-                .map(Role::getName)
-                .collect(Collectors.toSet());
-    }
+//    default Set<String> mapRolesToStrings(Set<Role> roles) {
+//        return roles.stream()
+//                .map(Role::getName)
+//                .collect(Collectors.toSet());
+//    }
 }
