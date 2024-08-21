@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -17,13 +16,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
-    String categoryId;
-
-    @Column(nullable = false)
     String categoryName;
 
+    @Column(nullable = false)
     String description;
 
     @CreationTimestamp

@@ -13,16 +13,16 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeCreationRequest {
 
-    @GenericConstraint(message = "Invalid name ( đã được custom )", min = 4)
+    @GenericConstraint(message = "Name must be at least 4 characters long", min = 4)
     String name;
 
-    @NotBlank(message = "USERNAME_INVALID")
-    @GenericConstraint(message = "Invalid username ( đã được custom )" , min = 4)
+    @NotBlank(message = "Username is required")
+    @GenericConstraint(message = "Username must be at least 4 characters long", min = 4)
     String username;
 
-    @NotBlank(message = "PASSWORD_INVALID")
+    @NotBlank(message = "Password is required")
     String password;
 
-    @NotBlank(message = "PHONE_NUMBER_INVALID")
+    @NotBlank(message = "Phone number is required")
     String phoneNumber;
 }

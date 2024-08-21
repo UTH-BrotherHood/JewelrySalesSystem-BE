@@ -20,27 +20,28 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     String productId;
 
-    String categoryId;
 
-    @Column(nullable = false)
+    String categoryName;
+
+
     String name;
 
-    @Column(nullable = false)
+
     String description;
 
-    @Column(nullable = false)
+
     BigDecimal costPrice;
 
-    @Column(nullable = false)
+
     BigDecimal weight;
 
-    @Column(nullable = false)
+
     BigDecimal laborCost;
 
-    @Column(nullable = false)
+
     BigDecimal stoneCost;
 
-    @Column(nullable = false)
+
     Integer stockQuantity;
 
     @CreationTimestamp

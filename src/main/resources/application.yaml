@@ -9,7 +9,6 @@ spring:
     username: root
     password: 30122004
     driverClassName: "com.mysql.cj.jdbc.Driver"
-
   jpa:
     hibernate:
       ddl-auto: update

@@ -23,6 +23,7 @@ public enum ErrorCode {
     ADDRESS_INVALID(400, "Address cannot be blank", HttpStatus.BAD_REQUEST),
 
     // Product-related Errors
+
     PRODUCT_NOT_FOUND(404, "Product not found", HttpStatus.NOT_FOUND),
     PRODUCT_EXISTED(500, "Product already exists", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_PRODUCT_ID(400, "Invalid product ID", HttpStatus.BAD_REQUEST),
@@ -31,6 +32,8 @@ public enum ErrorCode {
     INVALID_PRODUCT_PRICE(400, "Product price is invalid", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_WEIGHT(400, "Product weight is invalid", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_STOCK(400, "Product stock quantity is invalid", HttpStatus.BAD_REQUEST),
+    INSUFFICIENT_STOCK(400, "Insufficient stock", HttpStatus.BAD_REQUEST),
+    PRODUCT_ALREADY_EXISTS(400, "Product already exists", HttpStatus.BAD_REQUEST),
 
     EMPLOYEE_NOT_FOUND(404, "Employee not found", HttpStatus.NOT_FOUND),
     CUSTOMER_NOT_FOUND(404, "Customer not found", HttpStatus.NOT_FOUND),
@@ -42,6 +45,7 @@ public enum ErrorCode {
 
     // Categories Errors
     CATEGORY_NOT_FOUND(404, "Category not found", HttpStatus.NOT_FOUND),
+    CATEGORY_ALREADY_EXISTS(404, "Category already exists", HttpStatus.BAD_REQUEST),
 
     // SalesOrder Errors
     SALES_ORDER_NOT_FOUND(404, "Sales order not found", HttpStatus.NOT_FOUND),

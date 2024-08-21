@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
-    String categoryId;
     String categoryName;
     String description;
     LocalDateTime createdAt;

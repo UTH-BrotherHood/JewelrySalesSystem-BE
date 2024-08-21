@@ -20,28 +20,32 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public CategoryResponse createCategory(CategoryCreationRequest request) {
+        // Kiểm tra xem categoryName đã tồn tại chưa
+        if (categoryRepository.existsById(request.getCategoryName())) {
+            throw new AppException(ErrorCode.CATEGORY_ALREADY_EXISTS);
+        }
         Category category = categoryMapper.toCategory(request);
         Category savedCategory = categoryRepository.save(category);
         return categoryMapper.toCategoryResponse(savedCategory);
     }
 
-    public CategoryResponse updateCategory(String categoryId, CategoryUpdateRequest request) {
-        Category category = categoryRepository.findById(categoryId)
+    public CategoryResponse updateCategory(String categoryName, CategoryUpdateRequest request) {
+        Category category = categoryRepository.findById(categoryName)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
         categoryMapper.updateCategory(category, request);
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toCategoryResponse(updatedCategory);
     }
 
-    public void deleteCategory(String categoryId) {
-        if (!categoryRepository.existsById(categoryId)) {
+    public void deleteCategory(String categoryName) {
+        if (!categoryRepository.existsById(categoryName)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_FOUND);
         }
-        categoryRepository.deleteById(categoryId);
+        categoryRepository.deleteById(categoryName);
     }
 
-    public CategoryResponse getCategory(String categoryId) {
-        Category category = categoryRepository.findById(categoryId)
+    public CategoryResponse getCategory(String categoryName) {
+        Category category = categoryRepository.findById(categoryName)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
         return categoryMapper.toCategoryResponse(category);
     }

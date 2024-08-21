@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
     String productId;
-    String categoryId;
+    String categoryName;
     String name;
     String description;
     BigDecimal costPrice;
@@ -23,18 +24,4 @@ public class ProductResponse {
     Integer stockQuantity;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-
-    public ProductResponse(Product product) {
-        this.productId = product.getProductId();
-        this.categoryId = product.getCategoryId();
-        this.name = product.getName();
-        this.description = product.getDescription();
-        this.costPrice = product.getCostPrice();
-        this.weight = product.getWeight();
-        this.laborCost = product.getLaborCost();
-        this.stoneCost = product.getStoneCost();
-        this.stockQuantity = product.getStockQuantity();
-        this.createdAt = product.getCreatedAt();
-        this.updatedAt = product.getUpdatedAt();
-    }
 }

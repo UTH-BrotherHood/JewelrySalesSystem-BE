@@ -6,19 +6,38 @@ import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.ProductMapper;
+import com.example.JewelrySalesSystem.repository.CategoryRepository;
 import com.example.JewelrySalesSystem.repository.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
     public Product createProduct(ProductCreationRequest request) {
+        // Kiểm tra sự tồn tại của danh mục
+        if (!categoryRepository.existsById(request.getCategoryName())) {
+            throw new AppException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
+
+        // Kiểm tra sự tồn tại của sản phẩm
+        if (productRepository.existsByName(request.getName())) {
+            throw new AppException(ErrorCode.PRODUCT_ALREADY_EXISTS);
+        }
+
         Product product = productMapper.toProduct(request);
         return productRepository.save(product);
     }
@@ -37,8 +56,33 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public Page<Product> getProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<Product> getProducts(
+            int page, int size, String name, BigDecimal minCostPrice, BigDecimal maxCostPrice, String sortBy, String sortOrder) {
+
+        // Build the specification for filtering
+        Specification<Product> spec = Specification.where(null);
+
+        if (name != null && !name.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + name + "%"));
+        }
+
+        if (minCostPrice != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("costPrice"), minCostPrice));
+        }
+
+        if (maxCostPrice != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("costPrice"), maxCostPrice));
+        }
+
+        // Create the sorting object
+        Sort.Direction direction = Sort.Direction.fromString(sortOrder);
+        Sort sort = Sort.by(direction, sortBy);
+
+        // Create the Pageable object
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+        // Return the filtered and sorted products
+        return productRepository.findAll(spec, pageRequest);
     }
 
     public Product getProduct(String productId) {

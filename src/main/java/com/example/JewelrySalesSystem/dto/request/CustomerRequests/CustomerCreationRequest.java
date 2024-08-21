@@ -13,20 +13,22 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerCreationRequest {
-    @NotBlank(message = "USERNAME_INVALID")
-    @Size(min = 4, message = "USERNAME_INVALID")
+
+    @NotBlank(message = "Username is required")
+    @Size(min = 4, message = "Username must be at least 4 characters long")
     String customername;
 
-    @Email(message = "EMAIL_INVALID")
-    @NotBlank(message = "EMAIL_INVALID")
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     String email;
 
-    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "PHONE_INVALID")
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")
     String phone;
 
-    @NotBlank(message = "ADDRESS_INVALID")
+    @NotBlank(message = "Address is required")
     String address;
 
     Integer rewardPoints;
 }
+
 

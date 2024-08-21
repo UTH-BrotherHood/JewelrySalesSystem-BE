@@ -13,15 +13,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SalesOrderCreationRequest {
-    @NotNull(message = "CUSTOMER_ID_REQUIRED")
+    @NotNull(message = "Customer ID is required")
     String customerId;
 
-    @NotNull(message = "EMPLOYEE_ID_REQUIRED")
+    @NotNull(message = "Employee ID is required")
     String employeeId;
 
-    @NotNull(message = "ORDER_DATE_REQUIRED")
+    @NotNull(message = "Order date is required")
     LocalDateTime orderDate;
 
-    @NotNull(message = "TOTAL_AMOUNT_REQUIRED")
+    @NotNull(message = "Total amount is required")
     BigDecimal totalAmount;
 }
+

@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryCreationRequest {
-    @NotBlank(message = "CATEGORY_NAME_REQUIRED")
+    @NotBlank(message = "Category name is required")
     String categoryName;
+
     String description;
 }
