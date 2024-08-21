@@ -1,5 +1,7 @@
 package com.example.JewelrySalesSystem.dto.response;
 
+import com.example.JewelrySalesSystem.entity.Customer;
+import com.example.JewelrySalesSystem.entity.Employee;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

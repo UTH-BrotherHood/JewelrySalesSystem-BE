@@ -36,30 +36,22 @@ public class EmployeeService {
 
 
     public Employee createEmployee(EmployeeCreationRequest request) {
-        // Check if the username already exists
         if (employeeRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
-        // Map the request to the Employee entity
         Employee employee = employeeMapper.toEmployee(request);
 
-        // Encode the password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // Retrieve the EMPLOYEE role from the RoleRepository
         Role employeeRole = roleRepository.findByName(PredefinedRole.EMPLOYEE_ROLE)
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
-        // Assign the EMPLOYEE role to the new employee
         var roles = new HashSet<Role>();
         roles.add(employeeRole);
         employee.setRoles(roles);
 
-        // Set the phone number
         employee.setPhoneNumber(request.getPhoneNumber());
 
-        // Save and return the employee
         return employeeRepository.save(employee);
     }
 

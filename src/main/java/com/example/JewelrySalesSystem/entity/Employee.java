@@ -36,8 +36,9 @@ public class Employee {
     @Column( nullable = false)
     String phoneNumber;
 
-    @OneToMany
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<SalesOrder> salesOrders;
+
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
