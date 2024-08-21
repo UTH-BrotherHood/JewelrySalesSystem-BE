@@ -29,8 +29,7 @@ public class Customer {
     @ManyToMany
     Set<Role> roles;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<SalesOrder> salesOrders;
+
 
     @CreationTimestamp
     LocalDateTime createdAt;
