@@ -1,6 +1,7 @@
 package com.example.JewelrySalesSystem.service;
 
 import com.example.JewelrySalesSystem.dto.request.SalesOrderDetailRequests.SalesOrderDetailsCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.WarrantyRequests.WarrantyCreationRequest;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderDetailResponse;
 import com.example.JewelrySalesSystem.entity.SalesOrderDetail;
 import com.example.JewelrySalesSystem.entity.Product;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,22 +27,14 @@ public class SalesOrderDetailService {
     private final SalesOrderDetailMapper salesOrderDetailMapper;
     private final SalesOrderRepository salesOrderRepository;
     private final ProductRepository productRepository;
+    private final WarrantyService warrantyService; // Inject WarrantyService
 
-    public List<SalesOrderDetailResponse> getSalesOrderDetailsByOrderId(String orderId) {
-        List<SalesOrderDetail> salesOrderDetails = salesOrderDetailRepository.findByOrderId(orderId);
-        return salesOrderDetails.stream()
-                .map(salesOrderDetailMapper::toSalesOrderDetailResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional // Đảm bảo rằng tất cả các thay đổi đều được commit cùng nhau
+    @Transactional
     public List<SalesOrderDetailResponse> createSalesOrderDetails(SalesOrderDetailsCreationRequest request) {
-        // Kiểm tra sự tồn tại của orderId
         if (!salesOrderRepository.existsById(request.getOrderId())) {
             throw new AppException(ErrorCode.SALES_ORDER_NOT_FOUND);
         }
 
-        // Danh sách sản phẩm không hợp lệ
         List<String> invalidProductIds = request.getProducts().stream()
                 .filter(productRequest -> !productRepository.existsById(productRequest.getProductId()))
                 .map(productRequest -> productRequest.getProductId())
@@ -50,7 +44,6 @@ public class SalesOrderDetailService {
             throw new AppException(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
-        // Danh sách sản phẩm không đủ số lượng trong kho
         List<String> insufficientStockProductIds = request.getProducts().stream()
                 .filter(productRequest -> {
                     Product product = productRepository.findById(productRequest.getProductId()).orElse(null);
@@ -63,7 +56,6 @@ public class SalesOrderDetailService {
             throw new AppException(ErrorCode.INSUFFICIENT_STOCK);
         }
 
-        // Lưu chi tiết đơn hàng
         List<SalesOrderDetail> salesOrderDetails = request.getProducts().stream()
                 .map(productRequest -> {
                     BigDecimal totalPrice = productRequest.getUnitPrice().multiply(BigDecimal.valueOf(productRequest.getQuantity()));
@@ -79,7 +71,16 @@ public class SalesOrderDetailService {
 
         List<SalesOrderDetail> savedSalesOrderDetails = salesOrderDetailRepository.saveAll(salesOrderDetails);
 
-        // Cập nhật số lượng hàng tồn kho
+        // Create warranties for each product in the order details
+        savedSalesOrderDetails.forEach(detail -> {
+            WarrantyCreationRequest warrantyRequest = WarrantyCreationRequest.builder()
+                    .productId(detail.getProductId())
+                    .warrantyStartDate(LocalDateTime.now())
+                    .warrantyEndDate(LocalDateTime.now().plusYears(1)) // assuming a 1-year warranty
+                    .build();
+            warrantyService.createWarranty(warrantyRequest);
+        });
+
         request.getProducts().forEach(productRequest -> {
             Product product = productRepository.findById(productRequest.getProductId()).orElse(null);
             if (product != null) {

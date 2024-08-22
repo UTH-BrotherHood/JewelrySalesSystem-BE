@@ -5,6 +5,7 @@ import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsC
 import com.example.JewelrySalesSystem.dto.request.StatisticsRequests.StatisticsUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.StatisticsResponse;
 import com.example.JewelrySalesSystem.service.StatisticsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<StatisticsResponse>> createStatistics(@RequestBody StatisticsCreationRequest request) {
+    public ResponseEntity<ApiResponse<StatisticsResponse>> createStatistics(@Valid  @RequestBody StatisticsCreationRequest request) {
         StatisticsResponse response = statisticsService.createStatistics(request);
         ApiResponse<StatisticsResponse> apiResponse = new ApiResponse<>();
         apiResponse.setCode(201);

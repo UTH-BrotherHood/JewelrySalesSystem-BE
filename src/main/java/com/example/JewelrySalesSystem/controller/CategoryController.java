@@ -5,6 +5,7 @@ import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryCreat
 import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CategoryResponse;
 import com.example.JewelrySalesSystem.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryCreationRequest request) {
+    public ApiResponse<CategoryResponse> createCategory(@Valid @RequestBody CategoryCreationRequest request) {
         ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>();
         CategoryResponse categoryResponse = categoryService.createCategory(request);
         apiResponse.setCode(201);
@@ -30,6 +31,7 @@ public class CategoryController {
 
     @PutMapping("/{categoryId}")
     public ApiResponse<CategoryResponse> updateCategory(
+            @Valid
             @PathVariable String categoryId,
             @RequestBody CategoryUpdateRequest request) {
         ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>();

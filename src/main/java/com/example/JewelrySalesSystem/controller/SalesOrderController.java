@@ -6,6 +6,7 @@ import com.example.JewelrySalesSystem.dto.request.SalesOrderRequests.SalesOrderU
 import com.example.JewelrySalesSystem.dto.response.SalesOrderResponse;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderWithDetailsResponse;
 import com.example.JewelrySalesSystem.service.SalesOrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,7 @@ public class SalesOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<SalesOrderResponse>> createSalesOrder(@RequestBody SalesOrderCreationRequest request) {
+    public ResponseEntity<ApiResponse<SalesOrderResponse>> createSalesOrder(@Valid  @RequestBody SalesOrderCreationRequest request) {
         SalesOrderResponse salesOrderResponse = salesOrderService.createSalesOrder(request);
         ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>();
         apiResponse.setCode(201);

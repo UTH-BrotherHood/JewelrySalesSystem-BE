@@ -4,6 +4,7 @@ import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.PermissionRequests.PermissionRequest;
 import com.example.JewelrySalesSystem.dto.response.PermissionResponse;
 import com.example.JewelrySalesSystem.service.PermissionService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,7 @@ public class PermissionController {
     PermissionService permissionService;
 
     @PostMapping
-    public ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request) {
+    public ApiResponse<PermissionResponse> create(@Valid @RequestBody PermissionRequest request) {
         ApiResponse<PermissionResponse> apiResponse = new ApiResponse<>();
         PermissionResponse response = permissionService.create(request);
         apiResponse.setCode(201);

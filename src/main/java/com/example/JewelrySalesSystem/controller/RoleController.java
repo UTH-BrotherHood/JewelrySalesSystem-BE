@@ -4,6 +4,7 @@ import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.RoleRequests.RoleRequest;
 import com.example.JewelrySalesSystem.dto.response.RoleResponse;
 import com.example.JewelrySalesSystem.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,7 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping
-    public ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
+    public ApiResponse<RoleResponse> create(@Valid @RequestBody RoleRequest request) {
         ApiResponse<RoleResponse> apiResponse = new ApiResponse<>();
         RoleResponse response = roleService.create(request);
         apiResponse.setCode(201);

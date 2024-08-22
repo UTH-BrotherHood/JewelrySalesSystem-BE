@@ -7,7 +7,7 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(100, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(400, "Invalid validation key", HttpStatus.BAD_REQUEST),
     INVALID_INPUT(400, "Invalid validation INVALID_INPUT", HttpStatus.BAD_REQUEST),
-    UNAUTHENTICATED(401, "Unauthorized", HttpStatus.UNAUTHORIZED),
+    UNAUTHENTICATED(401, "Authentication failed: Token expired or invalid", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, "You do not have permission", HttpStatus.FORBIDDEN),
 
     // User Errors
@@ -108,12 +108,18 @@ public enum ErrorCode {
     //
     SALES_ORDER_DETAIL_NOT_FOUND(404, "Sales order detail not found", HttpStatus.NOT_FOUND),
 
+    WARRANTY_NOT_FOUND(404,"Warranty not found", HttpStatus.NOT_FOUND),
+
     // Statistics Errors
     INVALID_REPORT_TYPE(400, "Report type is required", HttpStatus.BAD_REQUEST),
     INVALID_REPORT_DATE(400, "Report date is required", HttpStatus.BAD_REQUEST),
     INVALID_DATA(400, "Data is required", HttpStatus.BAD_REQUEST),
 
+    RESOURCE_NOT_FOUND(404, "Resource not found", HttpStatus.NOT_FOUND),
+
     ROLE_NOT_FOUND(400, "ROLE NOT FOUND",HttpStatus.BAD_REQUEST);
+
+
 
     private final int code;
     private final String message;

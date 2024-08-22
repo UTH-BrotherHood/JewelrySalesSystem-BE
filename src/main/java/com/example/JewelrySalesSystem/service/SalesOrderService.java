@@ -2,24 +2,30 @@ package com.example.JewelrySalesSystem.service;
 
 import com.example.JewelrySalesSystem.dto.request.SalesOrderRequests.SalesOrderCreationRequest;
 import com.example.JewelrySalesSystem.dto.request.SalesOrderRequests.SalesOrderUpdateRequest;
+import com.example.JewelrySalesSystem.dto.request.WarrantyRequests.WarrantyCreationRequest;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderResponse;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderWithDetailsResponse;
+
 import com.example.JewelrySalesSystem.entity.SalesOrder;
 import com.example.JewelrySalesSystem.entity.SalesOrderDetail;
+import com.example.JewelrySalesSystem.entity.Warranty;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.SalesOrderMapper;
+import com.example.JewelrySalesSystem.mapper.WarrantyMapper;
 import com.example.JewelrySalesSystem.repository.CustomerRepository;
 import com.example.JewelrySalesSystem.repository.EmployeeRepository;
 import com.example.JewelrySalesSystem.repository.ProductRepository;
 import com.example.JewelrySalesSystem.repository.SalesOrderDetailRepository;
 import com.example.JewelrySalesSystem.repository.SalesOrderRepository;
+import com.example.JewelrySalesSystem.repository.WarrantyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +36,8 @@ public class SalesOrderService {
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
     private final ProductRepository productRepository;
+    private final WarrantyRepository warrantyRepository;
+    private final WarrantyMapper warrantyMapper;
 
     public SalesOrderResponse createSalesOrder(SalesOrderCreationRequest request) {
         if (!customerRepository.existsById(request.getCustomerId())) {
@@ -56,8 +64,6 @@ public class SalesOrderService {
         if (!employeeRepository.existsById(request.getEmployeeId())) {
             throw new AppException(ErrorCode.EMPLOYEE_NOT_FOUND);
         }
-
-
 
         salesOrderMapper.updateSalesOrder(salesOrder, request);
         SalesOrder updatedSalesOrder = salesOrderRepository.save(salesOrder);
@@ -99,7 +105,6 @@ public class SalesOrderService {
         return salesOrderRepository.findByCustomerId(customerId, pageable)
                 .map(salesOrderMapper::toSalesOrderResponse);
     }
-
 
     public SalesOrderWithDetailsResponse getSalesOrderWithDetails(String orderId) {
         SalesOrder salesOrder = salesOrderRepository.findById(orderId)

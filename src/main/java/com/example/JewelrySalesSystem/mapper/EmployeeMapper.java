@@ -21,9 +21,5 @@ public interface EmployeeMapper {
     @Mapping(target = "roles", ignore = true)
     void updateEmployee(@MappingTarget Employee employee, EmployeeUpdateRequest request);
 
-//    default Set<String> mapRolesToStrings(Set<Role> roles) {
-//        return roles.stream()
-//                .map(Role::getName)
-//                .collect(Collectors.toSet());
-//    }
+
 }
