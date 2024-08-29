@@ -1,27 +1,21 @@
 package com.example.JewelrySalesSystem.dto.response;
 
-import com.example.JewelrySalesSystem.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class WarrantyResponse {
+    String warrantyId;
     String productId;
-    String categoryName;
-    String name;
-    String description;
-    BigDecimal costPrice;
-    BigDecimal weight;
-    BigDecimal laborCost;
-    BigDecimal stoneCost;
-    Integer stockQuantity;
+    LocalDateTime warrantyStartDate;
+    LocalDateTime warrantyEndDate;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

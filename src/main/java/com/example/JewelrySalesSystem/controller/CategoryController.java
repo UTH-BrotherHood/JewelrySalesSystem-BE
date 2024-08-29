@@ -5,6 +5,7 @@ import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryCreat
 import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CategoryResponse;
 import com.example.JewelrySalesSystem.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,39 +20,56 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(@RequestBody CategoryCreationRequest request) {
+    public ApiResponse<CategoryResponse> createCategory(@Valid @RequestBody CategoryCreationRequest request) {
+        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>();
         CategoryResponse categoryResponse = categoryService.createCategory(request);
-        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>(201, "Category created successfully", categoryResponse);
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Category created successfully");
+        apiResponse.setResult(categoryResponse);
+        return apiResponse;
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
+    public ApiResponse<CategoryResponse> updateCategory(
+            @Valid
             @PathVariable String categoryId,
             @RequestBody CategoryUpdateRequest request) {
+        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>();
         CategoryResponse categoryResponse = categoryService.updateCategory(categoryId, request);
-        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>(200, "Category updated successfully", categoryResponse);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Category updated successfully");
+        apiResponse.setResult(categoryResponse);
+        return apiResponse;
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable String categoryId) {
+    public ApiResponse<String> deleteCategory(@PathVariable String categoryId) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
         categoryService.deleteCategory(categoryId);
-        ApiResponse<Void> apiResponse = new ApiResponse<>(204, "Category deleted successfully", null);
-        return ResponseEntity.noContent().build();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Category deleted successfully");
+        apiResponse.setResult("Category has been deleted");
+        return apiResponse;
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(@PathVariable String categoryId) {
+    public ApiResponse<CategoryResponse> getCategory(@PathVariable String categoryId) {
+        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>();
         CategoryResponse categoryResponse = categoryService.getCategory(categoryId);
-        ApiResponse<CategoryResponse> apiResponse = new ApiResponse<>(200, "Category retrieved successfully", categoryResponse);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Category retrieved successfully");
+        apiResponse.setResult(categoryResponse);
+        return apiResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<CategoryResponse>>> getCategories(Pageable pageable) {
+    public ApiResponse<Page<CategoryResponse>> getCategories(Pageable pageable) {
+        ApiResponse<Page<CategoryResponse>> apiResponse = new ApiResponse<>();
         Page<CategoryResponse> categories = categoryService.getCategories(pageable);
-        ApiResponse<Page<CategoryResponse>> apiResponse = new ApiResponse<>(200, "Categories retrieved successfully", categories);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Categories retrieved successfully");
+        apiResponse.setResult(categories);
+        return apiResponse;
     }
+
 }

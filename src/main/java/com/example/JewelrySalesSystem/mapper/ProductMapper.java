@@ -5,12 +5,14 @@ import com.example.JewelrySalesSystem.dto.request.ProductRequests.ProductUpdateR
 import com.example.JewelrySalesSystem.dto.response.ProductResponse;
 import com.example.JewelrySalesSystem.entity.Product;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface ProductMapper {
+    @Mapping(source = "categoryName", target = "categoryName")
     Product toProduct(ProductCreationRequest request);
-
+    @Mapping(source = "categoryName", target = "categoryName")
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);
 
     ProductResponse toProductResponse(Product product);

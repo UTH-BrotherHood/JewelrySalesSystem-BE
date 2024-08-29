@@ -4,6 +4,7 @@ import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.PermissionRequests.PermissionRequest;
 import com.example.JewelrySalesSystem.dto.response.PermissionResponse;
 import com.example.JewelrySalesSystem.service.PermissionService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,23 +24,33 @@ public class PermissionController {
     PermissionService permissionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PermissionResponse>> create(@RequestBody PermissionRequest request) {
+    public ApiResponse<PermissionResponse> create(@Valid @RequestBody PermissionRequest request) {
+        ApiResponse<PermissionResponse> apiResponse = new ApiResponse<>();
         PermissionResponse response = permissionService.create(request);
-        ApiResponse<PermissionResponse> apiResponse = new ApiResponse<>(201, "Permission created successfully", response);
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        apiResponse.setCode(201);
+        apiResponse.setMessage("Permission created successfully");
+        apiResponse.setResult(response);
+        return apiResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PermissionResponse>>> getAll() {
+    public ApiResponse<List<PermissionResponse>> getAll() {
+        ApiResponse<List<PermissionResponse>> apiResponse = new ApiResponse<>();
         List<PermissionResponse> permissions = permissionService.getAll();
-        ApiResponse<List<PermissionResponse>> apiResponse = new ApiResponse<>(200, "Permissions retrieved successfully", permissions);
-        return ResponseEntity.ok(apiResponse);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Permissions retrieved successfully");
+        apiResponse.setResult(permissions);
+        return apiResponse;
     }
 
     @DeleteMapping("/{permission}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String permission) {
+    public ApiResponse<String> delete(@PathVariable String permission) {
+        ApiResponse<String> apiResponse = new ApiResponse<>();
         permissionService.delete(permission);
-        ApiResponse<Void> apiResponse = new ApiResponse<>(204, "Permission deleted successfully", null);
-        return ResponseEntity.noContent().build();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Permission deleted successfully");
+        apiResponse.setResult("Permission has been deleted");
+        return apiResponse;
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.JewelrySalesSystem.controller;
 
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
+import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.service.EmployeeService;
@@ -55,14 +56,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public ApiResponse<Employee> updateEmployee(@PathVariable String employeeId, @RequestBody @Valid EmployeeCreationRequest request) {
-        ApiResponse<Employee> apiResponse = new ApiResponse<>();
-        Employee updatedEmployee = employeeService.updateEmployee(employeeId, request);
-        apiResponse.setCode(200);
-        apiResponse.setMessage("Employee updated successfully");
-        apiResponse.setResult(updatedEmployee);
-        return apiResponse;
+    ApiResponse<EmployeeResponse> updateUser(@PathVariable String employeeId, @RequestBody EmployeeUpdateRequest request){
+        return ApiResponse.<EmployeeResponse>builder()
+                .result(employeeService.updateEmployee(employeeId, request))
+                .build();
     }
+
 
     @DeleteMapping("/{employeeId}")
     public ApiResponse<String> deleteEmployee(@PathVariable String employeeId) {

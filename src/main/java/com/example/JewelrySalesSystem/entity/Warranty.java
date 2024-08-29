@@ -7,8 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -16,27 +15,21 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Employee {
+public class Warranty {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String employeeId;
+    String warrantyId;
 
-
-    String name;
-
-    @Column(nullable = false, unique = true)
-    String username;
+    @ManyToOne
+    @JoinColumn(name = "productId", nullable = false)
+    Product product;
 
     @Column(nullable = false)
-    String password;
+    LocalDateTime warrantyStartDate;
 
-    @ManyToMany
-    Set<Role> roles;
-
-    @Column( nullable = false)
-    String phoneNumber;
-
-
+    @Column(nullable = false)
+    LocalDateTime warrantyEndDate;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -45,6 +38,4 @@ public class Employee {
     @UpdateTimestamp
     @Column(nullable = false)
     LocalDateTime updatedAt;
-
-
 }

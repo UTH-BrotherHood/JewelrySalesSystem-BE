@@ -1,5 +1,6 @@
 package com.example.JewelrySalesSystem.dto.request.ProductRequests;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateRequest {
-    Integer categoryId;
+    @NotBlank(message = "Category ID is required")
+    String categoryName;
     String name;
     String description;
     BigDecimal costPrice;

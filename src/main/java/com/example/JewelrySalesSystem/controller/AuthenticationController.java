@@ -3,6 +3,7 @@ package com.example.JewelrySalesSystem.controller;
 import com.example.JewelrySalesSystem.dto.request.ApiResponse;
 import com.example.JewelrySalesSystem.dto.request.AuthenticationRequest;
 import com.example.JewelrySalesSystem.dto.request.IntrospectRequest;
+import com.example.JewelrySalesSystem.dto.request.LogoutRequest;
 import com.example.JewelrySalesSystem.dto.response.AuthenticationResponse;
 import com.example.JewelrySalesSystem.dto.response.IntrospectResponse;
 import com.example.JewelrySalesSystem.service.AuthenticationService;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,19 +29,33 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/sign-in")
-    ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
-        var result = authenticationService.authenticate(request);
+    public ApiResponse<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
+        AuthenticationResponse result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
+                .code(200)
+                .message("Login successful")
                 .result(result)
                 .build();
     }
 
     @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
+    public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request)
             throws ParseException, JsonProcessingException, JOSEException {
-        var result = authenticationService.introspect(request);
+        IntrospectResponse result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder()
+                .code(200)
+                .message("Token introspection successful")
                 .result(result)
+                .build();
+    }
+
+    @PostMapping("/log-out")
+    public ApiResponse<Void> logout(@Valid @RequestBody LogoutRequest request)
+            throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Logout successful")
                 .build();
     }
 }

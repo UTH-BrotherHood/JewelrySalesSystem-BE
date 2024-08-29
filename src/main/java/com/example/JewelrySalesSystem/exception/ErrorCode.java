@@ -6,7 +6,8 @@ public enum ErrorCode {
     // General Errors
     UNCATEGORIZED_EXCEPTION(100, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(400, "Invalid validation key", HttpStatus.BAD_REQUEST),
-    UNAUTHENTICATED(401, "Unauthorized", HttpStatus.UNAUTHORIZED),
+    INVALID_INPUT(400, "Invalid validation INVALID_INPUT", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(401, "Authentication failed: Token expired or invalid", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, "You do not have permission", HttpStatus.FORBIDDEN),
 
     // User Errors
@@ -22,6 +23,7 @@ public enum ErrorCode {
     ADDRESS_INVALID(400, "Address cannot be blank", HttpStatus.BAD_REQUEST),
 
     // Product-related Errors
+
     PRODUCT_NOT_FOUND(404, "Product not found", HttpStatus.NOT_FOUND),
     PRODUCT_EXISTED(500, "Product already exists", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_PRODUCT_ID(400, "Invalid product ID", HttpStatus.BAD_REQUEST),
@@ -30,6 +32,8 @@ public enum ErrorCode {
     INVALID_PRODUCT_PRICE(400, "Product price is invalid", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_WEIGHT(400, "Product weight is invalid", HttpStatus.BAD_REQUEST),
     INVALID_PRODUCT_STOCK(400, "Product stock quantity is invalid", HttpStatus.BAD_REQUEST),
+    INSUFFICIENT_STOCK(400, "Insufficient stock", HttpStatus.BAD_REQUEST),
+    PRODUCT_ALREADY_EXISTS(400, "Product already exists", HttpStatus.BAD_REQUEST),
 
     EMPLOYEE_NOT_FOUND(404, "Employee not found", HttpStatus.NOT_FOUND),
     CUSTOMER_NOT_FOUND(404, "Customer not found", HttpStatus.NOT_FOUND),
@@ -41,6 +45,7 @@ public enum ErrorCode {
 
     // Categories Errors
     CATEGORY_NOT_FOUND(404, "Category not found", HttpStatus.NOT_FOUND),
+    CATEGORY_ALREADY_EXISTS(404, "Category already exists", HttpStatus.BAD_REQUEST),
 
     // SalesOrder Errors
     SALES_ORDER_NOT_FOUND(404, "Sales order not found", HttpStatus.NOT_FOUND),
@@ -103,10 +108,18 @@ public enum ErrorCode {
     //
     SALES_ORDER_DETAIL_NOT_FOUND(404, "Sales order detail not found", HttpStatus.NOT_FOUND),
 
+    WARRANTY_NOT_FOUND(404,"Warranty not found", HttpStatus.NOT_FOUND),
+
     // Statistics Errors
     INVALID_REPORT_TYPE(400, "Report type is required", HttpStatus.BAD_REQUEST),
     INVALID_REPORT_DATE(400, "Report date is required", HttpStatus.BAD_REQUEST),
-    INVALID_DATA(400, "Data is required", HttpStatus.BAD_REQUEST);
+    INVALID_DATA(400, "Data is required", HttpStatus.BAD_REQUEST),
+
+    RESOURCE_NOT_FOUND(404, "Resource not found", HttpStatus.NOT_FOUND),
+
+    ROLE_NOT_FOUND(400, "ROLE NOT FOUND",HttpStatus.BAD_REQUEST);
+
+
 
     private final int code;
     private final String message;

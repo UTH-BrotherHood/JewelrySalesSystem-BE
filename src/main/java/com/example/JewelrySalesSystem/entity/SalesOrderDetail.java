@@ -36,6 +36,8 @@ public class SalesOrderDetail {
     @Column(nullable = false)
     BigDecimal totalPrice;
 
+
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     LocalDateTime createdAt;

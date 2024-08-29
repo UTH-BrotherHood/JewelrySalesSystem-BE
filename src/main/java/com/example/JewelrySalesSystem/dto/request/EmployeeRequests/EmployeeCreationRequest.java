@@ -1,5 +1,6 @@
 package com.example.JewelrySalesSystem.dto.request.EmployeeRequests;
 
+import com.example.JewelrySalesSystem.validator.GenericConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -11,16 +12,17 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeCreationRequest {
-    @NotBlank(message = "NAME_INVALID")
+
+    @GenericConstraint(message = "Name must be at least 4 characters long", min = 4)
     String name;
 
-    @NotBlank(message = "USERNAME_INVALID")
-    @Size(min = 4, message = "USERNAME_INVALID")
+    @NotBlank(message = "Username is required")
+    @GenericConstraint(message = "Username must be at least 4 characters long", min = 4)
     String username;
 
-    @NotBlank(message = "PASSWORD_INVALID")
+    @NotBlank(message = "Password is required")
     String password;
 
-    @NotBlank(message = "PHONE_NUMBER_INVALID")
+    @NotBlank(message = "Phone number is required")
     String phoneNumber;
 }

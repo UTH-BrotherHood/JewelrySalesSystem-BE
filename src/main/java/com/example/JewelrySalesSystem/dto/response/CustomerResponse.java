@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,6 +19,7 @@ public class CustomerResponse {
     String phone;
     String address;
     Integer rewardPoints;
+    Set<RoleResponse> roles;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

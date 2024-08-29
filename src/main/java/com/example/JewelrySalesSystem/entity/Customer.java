@@ -7,8 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,11 +19,15 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String customerId;
+
     String customername;
     String email;
     String phone;
     String address;
     Integer rewardPoints;
+
+    @ManyToMany
+    Set<Role> roles;
 
 
 
