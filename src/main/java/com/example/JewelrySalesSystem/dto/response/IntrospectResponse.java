@@ -9,7 +9,15 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class IntrospectResponse {
-    boolean valid;
+    private boolean valid;
 
+    // Getter
+    public boolean isValid() {
+        return valid;
+    }
 
+    // Setter
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
 }

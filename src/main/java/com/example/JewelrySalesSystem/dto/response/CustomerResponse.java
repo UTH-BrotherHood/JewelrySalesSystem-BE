@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerResponse {
-    String id;
+    String customerId;
     String customername;
     String email;
     String phone;
