@@ -37,11 +37,11 @@ public class CategoryService {
         return categoryMapper.toCategoryResponse(updatedCategory);
     }
 
-    public void deleteCategory(String categoryName) {
-        if (!categoryRepository.existsById(categoryName)) {
+    public void deleteCategory(String categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_FOUND);
         }
-        categoryRepository.deleteById(categoryName);
+        categoryRepository.deleteById(categoryId);
     }
 
     public CategoryResponse getCategory(String categoryName) {
