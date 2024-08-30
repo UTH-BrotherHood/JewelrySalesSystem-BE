@@ -28,7 +28,7 @@ public class CustomerService {
     CustomerMapper customerMapper;
     RoleRepository roleRepository;
 
-    public Customer createCustomer(CustomerCreationRequest request) {
+    public CustomerResponse createCustomer(CustomerCreationRequest request) {
         // Check if the customer name already exists
         if (customerRepository.existsBycustomername(request.getCustomername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -47,12 +47,13 @@ public class CustomerService {
         customer.setRoles(roles);
 
         // Save and return the customer
-        return customerRepository.save(customer);
+        var createdCustomer = customerRepository.save(customer);
+        return customerMapper.toCustomerResponse(createdCustomer);
     }
 
 
-    public List<Customer> getCustomers() {
-        return customerRepository.findAll();
+    public List<CustomerResponse> getCustomers() {
+        return customerRepository.findAll().stream().map(customerMapper::toCustomerResponse).toList();
     }
 
     public CustomerResponse getCustomer(String customerId) {
@@ -60,11 +61,12 @@ public class CustomerService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
-    public Customer updateCustomer(String customerId, CustomerUpdateRequest request) {
+    public CustomerResponse updateCustomer(String customerId, CustomerUpdateRequest request) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         customerMapper.updateCustomer(customer, request);
-        return customerRepository.save(customer);
+        var updatedCustomer = customerRepository.save(customer);
+        return customerMapper.toCustomerResponse(updatedCustomer);
     }
 
     public void deleteCustomer(String customerId) {
