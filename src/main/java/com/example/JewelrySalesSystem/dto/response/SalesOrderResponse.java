@@ -19,6 +19,5 @@ public class SalesOrderResponse {
     String employeeId;
     LocalDateTime orderDate;
     BigDecimal totalAmount;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+
 }

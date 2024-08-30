@@ -26,6 +26,9 @@ public class SalesOrder {
     String customerId;
     String employeeId;
 
+    // Add Cart ID to link SalesOrder with Cart
+    String cartId;
+
     @Column(nullable = false)
     LocalDateTime orderDate;
 
@@ -39,6 +42,5 @@ public class SalesOrder {
     @UpdateTimestamp
     @Column(nullable = false)
     LocalDateTime updatedAt;
-
-
 }
+
