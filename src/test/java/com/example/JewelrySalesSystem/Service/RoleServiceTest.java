@@ -52,21 +52,16 @@ public class RoleServiceTest {
     Role role = new Role();
     RoleResponse roleResponse = new RoleResponse();
 
-    // Tạo các đối tượng Permission giả định
     Permission perm1 = new Permission(); // Đảm bảo rằng các đối tượng này được cấu hình đúng
     Permission perm2 = new Permission();
     Set<Permission> permissionsResult = new HashSet<>(Arrays.asList(perm1, perm2));
 
-    // Khi gọi roleMapper.toRole(request) thì trả về role
     when(roleMapper.toRole(request)).thenReturn(role);
 
-    // Khi gọi permissionRepository.findAllById(permissionsSet) thì trả về permissionsResult
     when(permissionRepository.findAllById(permissionsSet)).thenReturn(permissionsResult.stream().collect(Collectors.toList()));
 
-    // Khi gọi roleRepository.save(role) thì trả về role
     when(roleRepository.save(role)).thenReturn(role);
 
-    // Khi gọi roleMapper.toRoleResponse(role) thì trả về roleResponse
     when(roleMapper.toRoleResponse(role)).thenReturn(roleResponse);
 
     RoleResponse result = roleService.create(request);

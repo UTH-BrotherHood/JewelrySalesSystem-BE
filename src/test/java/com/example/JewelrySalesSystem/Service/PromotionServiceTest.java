@@ -91,7 +91,6 @@ class PromotionServiceTest {
             1, "Updated Description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), BigDecimal.valueOf(15), LocalDateTime.now(), LocalDateTime.now()
     );
 
-    // Mock behavior
     when(promotionRepository.findById("1")).thenReturn(Optional.of(existingPromotion));
     doNothing().when(promotionMapper).updatePromotion(existingPromotion, request);
     when(promotionRepository.save(existingPromotion)).thenReturn(updatedPromotion);
@@ -110,44 +109,35 @@ class PromotionServiceTest {
 
   @Test
   void updatePromotion_PromotionNotFound() {
-    // Arrange
     PromotionUpdateRequest request = new PromotionUpdateRequest(
             "Updated Description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), BigDecimal.valueOf(15)
     );
 
-    // Mock behavior
     when(promotionRepository.findById("1")).thenReturn(Optional.empty());
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> promotionService.updatePromotion("1", request));
     assertEquals(ErrorCode.PROMOTION_NOT_FOUND, thrown.getErrorCode());
   }
 
   @Test
   void deletePromotion_Success() {
-    // Arrange
     when(promotionRepository.existsById("1")).thenReturn(true);
 
-    // Act
     promotionService.deletePromotion("1");
 
-    // Assert
     verify(promotionRepository, times(1)).deleteById("1");
   }
 
   @Test
   void deletePromotion_PromotionNotFound() {
-    // Arrange
     when(promotionRepository.existsById("1")).thenReturn(false);
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> promotionService.deletePromotion("1"));
     assertEquals(ErrorCode.PROMOTION_NOT_FOUND, thrown.getErrorCode());
   }
 
   @Test
   void getPromotion_Success() {
-    // Arrange
     Promotion promotion = new Promotion();
     promotion.setPromotionId(1);
 
@@ -155,14 +145,11 @@ class PromotionServiceTest {
             1, "Description", LocalDateTime.now(), LocalDateTime.now().plusDays(1), BigDecimal.valueOf(10), LocalDateTime.now(), LocalDateTime.now()
     );
 
-    // Mock behavior
     when(promotionRepository.findById("1")).thenReturn(Optional.of(promotion));
     when(promotionMapper.toPromotionResponse(promotion)).thenReturn(response);
 
-    // Act
     PromotionResponse result = promotionService.getPromotion("1");
 
-    // Assert
     assertNotNull(result);
     assertEquals("Description", result.getPromotionDescription());
     verify(promotionRepository, times(1)).findById("1");
@@ -171,17 +158,14 @@ class PromotionServiceTest {
 
   @Test
   void getPromotion_PromotionNotFound() {
-    // Arrange
     when(promotionRepository.findById("1")).thenReturn(Optional.empty());
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> promotionService.getPromotion("1"));
     assertEquals(ErrorCode.PROMOTION_NOT_FOUND, thrown.getErrorCode());
   }
 
   @Test
   void getPromotions_Success() {
-    // Arrange
     Promotion promotion = new Promotion();
     promotion.setPromotionId(1);
 
@@ -192,14 +176,11 @@ class PromotionServiceTest {
     Page<Promotion> promotions = new PageImpl<>(Collections.singletonList(promotion));
     Page<PromotionResponse> responses = new PageImpl<>(Collections.singletonList(response));
 
-    // Mock behavior
     when(promotionRepository.findAll(any(Pageable.class))).thenReturn(promotions);
     when(promotionMapper.toPromotionResponse(promotion)).thenReturn(response);
 
-    // Act
     Page<PromotionResponse> result = promotionService.getPromotions(Pageable.unpaged());
 
-    // Assert
     assertNotNull(result);
     assertEquals(1, result.getTotalElements());
     assertEquals("Description", result.getContent().get(0).getPromotionDescription());

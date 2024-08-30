@@ -115,16 +115,16 @@ public class SalesOrderServiceTest {
 
   @Test
   void getSalesOrderWithDetails_Success() {
-    SalesOrder salesOrder = new SalesOrder(); // Đảm bảo đối tượng này đã được khởi tạo
+    SalesOrder salesOrder = new SalesOrder();
     List<SalesOrderDetail> details = List.of(new SalesOrderDetail());
-    SalesOrderResponse salesOrderResponse = new SalesOrderResponse(); // Khởi tạo SalesOrderResponse nếu cần
+    SalesOrderResponse salesOrderResponse = new SalesOrderResponse();
 
     SalesOrderWithDetailsResponse response = SalesOrderWithDetailsResponse.builder()
-            .salesOrder(salesOrderResponse) // Đảm bảo bạn sử dụng đối tượng SalesOrderResponse hợp lệ
-            .orderDetails(details) // Sử dụng orderDetails
+            .salesOrder(salesOrderResponse)
+            .orderDetails(details)
             .build();
 
-    // Giả lập hành vi của phương thức Mapper
+
     when(salesOrderRepository.findById(anyString())).thenReturn(Optional.of(salesOrder));
     when(salesOrderDetailRepository.findByOrderId(anyString())).thenReturn(details);
     when(salesOrderMapper.toSalesOrderWithDetailsResponse(any(SalesOrder.class), anyList())).thenReturn(response); // Sử dụng any(SalesOrder.class) và anyList()

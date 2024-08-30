@@ -85,10 +85,8 @@ class SalesOrderDetailServiceTest {
     when(salesOrderDetailRepository.saveAll(anyList())).thenReturn(List.of(salesOrderDetail));
     when(salesOrderDetailMapper.toSalesOrderDetailResponse(salesOrderDetail)).thenReturn(new SalesOrderDetailResponse());
 
-    // Act
     List<SalesOrderDetailResponse> responses = salesOrderDetailService.createSalesOrderDetails(request);
 
-    // Assert
     assertNotNull(responses);
     assertEquals(1, responses.size());
 
@@ -111,7 +109,6 @@ class SalesOrderDetailServiceTest {
 
     when(salesOrderRepository.existsById(request.getOrderId())).thenReturn(false);
 
-    // Act & Assert
     AppException exception = assertThrows(AppException.class, () ->
             salesOrderDetailService.createSalesOrderDetails(request));
 
@@ -136,7 +133,6 @@ class SalesOrderDetailServiceTest {
     when(salesOrderRepository.existsById(request.getOrderId())).thenReturn(true);
     when(productRepository.existsById(productRequest.getProductId())).thenReturn(false);
 
-    // Act & Assert
     AppException exception = assertThrows(AppException.class, () ->
             salesOrderDetailService.createSalesOrderDetails(request));
 

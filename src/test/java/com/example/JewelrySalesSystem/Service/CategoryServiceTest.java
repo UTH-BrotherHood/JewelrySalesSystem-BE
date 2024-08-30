@@ -43,7 +43,6 @@ public class CategoryServiceTest {
 
   @Test
   public void testCreateCategory_Success() {
-    // Arrange
     CategoryCreationRequest request = CategoryCreationRequest.builder()
             .categoryName("Jewelry")
             .description("Category for jewelry")
@@ -73,10 +72,8 @@ public class CategoryServiceTest {
     when(categoryRepository.save(category)).thenReturn(savedCategory);
     when(categoryMapper.toCategoryResponse(savedCategory)).thenReturn(categoryResponse);
 
-    // Act
     CategoryResponse result = categoryService.createCategory(request);
 
-    // Assert
     assertNotNull(result);
     assertEquals("Jewelry", result.getCategoryName());
     verify(categoryRepository).existsById(request.getCategoryName());
@@ -87,14 +84,12 @@ public class CategoryServiceTest {
 
   @Test
   public void testCreateCategory_CategoryExists() {
-    // Arrange
     CategoryCreationRequest request = CategoryCreationRequest.builder()
             .categoryName("Jewelry")
             .build();
 
     when(categoryRepository.existsById(request.getCategoryName())).thenReturn(true);
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> categoryService.createCategory(request));
     assertEquals(ErrorCode.CATEGORY_ALREADY_EXISTS, thrown.getErrorCode());
     verify(categoryRepository).existsById(request.getCategoryName());
@@ -138,10 +133,8 @@ public class CategoryServiceTest {
     when(categoryRepository.save(existingCategory)).thenReturn(updatedCategory);
     when(categoryMapper.toCategoryResponse(updatedCategory)).thenReturn(categoryResponse);
 
-    // Act
     CategoryResponse result = categoryService.updateCategory(categoryName, request);
 
-    // Assert
     assertNotNull(result);
     assertEquals("Updated description", result.getDescription());
     verify(categoryRepository).findById(categoryName);
@@ -152,13 +145,11 @@ public class CategoryServiceTest {
 
   @Test
   public void testUpdateCategory_CategoryNotFound() {
-    // Arrange
     String categoryName = "Jewelry";
     CategoryUpdateRequest request = new CategoryUpdateRequest();
 
     when(categoryRepository.findById(categoryName)).thenReturn(Optional.empty());
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> categoryService.updateCategory(categoryName, request));
     assertEquals(ErrorCode.CATEGORY_NOT_FOUND, thrown.getErrorCode());
     verify(categoryRepository).findById(categoryName);
@@ -167,23 +158,19 @@ public class CategoryServiceTest {
 
   @Test
   public void testDeleteCategory_Success() {
-    // Arrange
     String categoryName = "Jewelry";
 
     when(categoryRepository.existsById(categoryName)).thenReturn(true);
     doNothing().when(categoryRepository).deleteById(categoryName);
 
-    // Act
     categoryService.deleteCategory(categoryName);
 
-    // Assert
     verify(categoryRepository).existsById(categoryName);
     verify(categoryRepository).deleteById(categoryName);
   }
 
   @Test
   public void testDeleteCategory_CategoryNotFound() {
-    // Arrange
     String categoryName = "Jewelry";
 
     when(categoryRepository.existsById(categoryName)).thenReturn(false);
@@ -197,7 +184,6 @@ public class CategoryServiceTest {
 
   @Test
   public void testGetCategory_Success() {
-    // Arrange
     String categoryName = "Jewelry";
     Category category = Category.builder()
             .categoryName(categoryName)
@@ -216,10 +202,8 @@ public class CategoryServiceTest {
     when(categoryRepository.findById(categoryName)).thenReturn(Optional.of(category));
     when(categoryMapper.toCategoryResponse(category)).thenReturn(categoryResponse);
 
-    // Act
     CategoryResponse result = categoryService.getCategory(categoryName);
 
-    // Assert
     assertNotNull(result);
     assertEquals("Jewelry", result.getCategoryName());
     verify(categoryRepository).findById(categoryName);
@@ -228,12 +212,10 @@ public class CategoryServiceTest {
 
   @Test
   public void testGetCategory_CategoryNotFound() {
-    // Arrange
     String categoryName = "Jewelry";
 
     when(categoryRepository.findById(categoryName)).thenReturn(Optional.empty());
 
-    // Act & Assert
     AppException thrown = assertThrows(AppException.class, () -> categoryService.getCategory(categoryName));
     assertEquals(ErrorCode.CATEGORY_NOT_FOUND, thrown.getErrorCode());
     verify(categoryRepository).findById(categoryName);
@@ -242,7 +224,6 @@ public class CategoryServiceTest {
 
   @Test
   public void testGetCategories() {
-    // Arrange
     Pageable pageable = Pageable.unpaged();
     Category category1 = Category.builder().categoryName("Jewelry").build();
     Category category2 = Category.builder().categoryName("Watches").build();
@@ -256,10 +237,8 @@ public class CategoryServiceTest {
     when(categoryMapper.toCategoryResponse(category1)).thenReturn(categoryResponse1);
     when(categoryMapper.toCategoryResponse(category2)).thenReturn(categoryResponse2);
 
-    // Act
     Page<CategoryResponse> result = categoryService.getCategories(pageable);
 
-    // Assert
     assertNotNull(result);
     assertEquals(2, result.getTotalElements());
     assertEquals("Jewelry", result.getContent().get(0).getCategoryName());
