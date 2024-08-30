@@ -1,23 +1,20 @@
 package com.example.JewelrySalesSystem.dto.response;
 
-import com.example.JewelrySalesSystem.entity.Customer;
-import com.example.JewelrySalesSystem.entity.Employee;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SalesOrderResponse {
-    String orderId;
+public class CartResponse {
+    String cartId;
     String customerId;
-    String employeeId;
-    LocalDateTime orderDate;
+    List<CartItemResponse> items;
     BigDecimal totalAmount;
-
 }

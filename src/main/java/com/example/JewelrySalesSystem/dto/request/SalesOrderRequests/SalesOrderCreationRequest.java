@@ -19,10 +19,6 @@ public class SalesOrderCreationRequest {
     @NotNull(message = "Employee ID is required")
     String employeeId;
 
-    @NotNull(message = "Order date is required")
-    LocalDateTime orderDate;
 
-    @NotNull(message = "Total amount is required")
-    BigDecimal totalAmount;
 }
 

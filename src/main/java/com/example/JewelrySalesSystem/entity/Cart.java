@@ -8,8 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -17,23 +17,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class SalesOrder {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
-    String orderId;
+    private String cartId;
 
-    String customerId;
-    String employeeId;
+    private String customerId;
 
-    // Add Cart ID to link SalesOrder with Cart
-    String cartId;
-
-    @Column(nullable = false)
-    LocalDateTime orderDate;
-
-    @Column(nullable = false)
-    BigDecimal totalAmount;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> items = new ArrayList<>();
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
