@@ -8,7 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +17,14 @@ import java.time.LocalDateTime;
 @Entity
 public class Category {
     @Id
-    @Column(updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String categoryId;
+
+    @Column(
+            name = "category_name",
+            unique = true,
+            columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
+    // cấu hình để categoryName là duy nhất và ko phân biệt hoa thường
     String categoryName;
 
     @Column(nullable = false)
