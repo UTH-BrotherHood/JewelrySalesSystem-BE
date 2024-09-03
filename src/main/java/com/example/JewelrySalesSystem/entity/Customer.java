@@ -25,12 +25,15 @@ public class Customer {
     String email;
     String phone;
     String address;
-    Integer rewardPoints;
 
     @ManyToMany
     Set<Role> roles;
 
 
+    Integer rewardPoints ;
+
+
+    String rankLevel;
 
     @CreationTimestamp
     LocalDateTime createdAt;

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
     String productId;
-    String categoryName;
+    String categoryId;
     String name;
     String description;
     BigDecimal costPrice;

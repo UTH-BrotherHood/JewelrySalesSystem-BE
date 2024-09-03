@@ -117,6 +117,9 @@ public enum ErrorCode {
 
     RESOURCE_NOT_FOUND(404, "Resource not found", HttpStatus.NOT_FOUND),
 
+    RETURN_POLICY_NOT_FOUND(404, "Return policy not found", HttpStatus.NOT_FOUND),
+    PROMOTION_EXPIRED(400, "Promotion expired", HttpStatus.BAD_REQUEST),
+    PROMOTION_ALREADY_EXISTS(400, "Promotion already exists", HttpStatus.BAD_REQUEST),
     CART_IS_EMPTY(404, "Cart is empty", HttpStatus.BAD_REQUEST),
     ITEM_NOT_FOUND_IN_CART(404, "Item not found in cart", HttpStatus.NOT_FOUND),
     CART_NOT_FOUND(404, "Cart not found", HttpStatus.NOT_FOUND),

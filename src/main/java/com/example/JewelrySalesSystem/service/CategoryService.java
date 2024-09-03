@@ -18,16 +18,20 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-
     public CategoryResponse createCategory(CategoryCreationRequest request) {
         // Kiểm tra xem categoryName đã tồn tại chưa
-        if (categoryRepository.existsById(request.getCategoryName())) {
+        if (categoryRepository.existsByCategoryName(request.getCategoryName())) {
             throw new AppException(ErrorCode.CATEGORY_ALREADY_EXISTS);
         }
         Category category = categoryMapper.toCategory(request);
+
         Category savedCategory = categoryRepository.save(category);
-        return categoryMapper.toCategoryResponse(savedCategory);
+
+        CategoryResponse response = categoryMapper.toCategoryResponse(savedCategory);
+
+        return response;
     }
+
 
     public CategoryResponse updateCategory(String categoryName, CategoryUpdateRequest request) {
         Category category = categoryRepository.findById(categoryName)

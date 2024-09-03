@@ -27,7 +27,7 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     public ProductResponse createProduct(ProductCreationRequest request) {
-        if (!categoryRepository.existsById(request.getCategoryName())) {
+        if (!categoryRepository.existsById(request.getCategoryId())) {
             throw new AppException(ErrorCode.CATEGORY_NOT_FOUND);
         }
 

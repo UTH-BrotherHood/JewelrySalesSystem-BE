@@ -17,7 +17,13 @@ public class SalesOrderResponse {
     String orderId;
     String customerId;
     String employeeId;
+    String cartId;
     LocalDateTime orderDate;
-    BigDecimal totalAmount;
+    BigDecimal originalTotalAmount; // Giá gốc
+    BigDecimal discountedTotalAmount;
+    BigDecimal discountedByRank;
+    ReturnPolicyResponse returnPolicy; // Giá sau giảm giá
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
 }

@@ -20,7 +20,7 @@ public class CustomerResponse {
     String address;
     Integer rewardPoints;
     Set<RoleResponse> roles;
-
+    String rankLevel;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 

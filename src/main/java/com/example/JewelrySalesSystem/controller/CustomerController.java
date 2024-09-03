@@ -68,7 +68,15 @@ public class CustomerController {
         apiResponse.setResult("Customer has been deleted");
         return apiResponse;
     }
-
+    @GetMapping("/{customerId}/reward-points")
+    public ApiResponse<CustomerResponse> getCustomerRewardPoints(@PathVariable String customerId) {
+        CustomerResponse customer = customerService.getCustomer(customerId);
+        return ApiResponse.<CustomerResponse>builder()
+                .code(200)
+                .message("Customer reward points retrieved successfully")
+                .result(customer)
+                .build();
+    }
 
 
 

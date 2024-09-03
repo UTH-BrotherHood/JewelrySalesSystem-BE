@@ -9,6 +9,7 @@ import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.CartMapper;
 import com.example.JewelrySalesSystem.repository.CartRepository;
+import com.example.JewelrySalesSystem.repository.CustomerRepository;
 import com.example.JewelrySalesSystem.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartMapper cartMapper;
+    private final CustomerRepository customerRepository;
 
     public CartResponse getCartByCustomerId(String customerId) {
         Cart cart = cartRepository.findByCustomerId(customerId)
@@ -31,31 +33,54 @@ public class CartService {
     }
 
     public CartResponse addToCart(String customerId, CartItemRequest request) {
+        // Kiểm tra xem khách hàng có tồn tại không
+        if (!customerRepository.existsById(customerId)) {
+            throw new AppException(ErrorCode.CUSTOMER_NOT_FOUND);
+        }
+
+        // Tìm hoặc tạo mới giỏ hàng cho khách hàng
         Cart cart = cartRepository.findByCustomerId(customerId)
                 .orElseGet(() -> {
-                    // Create a new cart if none exists for the customerId
+                    // Tạo giỏ hàng mới nếu chưa có cho customerId
                     Cart newCart = Cart.builder()
                             .customerId(customerId)
-                            .items(new ArrayList<>()) // Initialize items list
+                            .items(new ArrayList<>()) // Khởi tạo danh sách items
                             .build();
                     return cartRepository.save(newCart);
                 });
 
-        CartItem cartItem = CartItem.builder()
-                .cart(cart)
-                .productId(request.getProductId())
+        // Tìm CartItem đã tồn tại trong giỏ hàng
+        CartItem existingCartItem = cart.getItems().stream()
+                .filter(item -> item.getProductId().equals(request.getProductId()))
+                .findFirst()
+                .orElse(null);
 
-                .quantity(request.getQuantity())
-                .price(productRepository.findById(request.getProductId())
-                        .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND))
-                        .getCostPrice())
-                .build();
+        if (existingCartItem != null) {
+            // Cập nhật số lượng nếu sản phẩm đã tồn tại trong giỏ hàng
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + request.getQuantity());
+            // Cập nhật giá (nếu cần) và lưu giỏ hàng
+            existingCartItem.setPrice(productRepository.findById(request.getProductId())
+                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND))
+                    .getCostPrice());
+        } else {
+            // Tạo mới CartItem và thêm vào giỏ hàng
+            CartItem newCartItem = CartItem.builder()
+                    .cart(cart)
+                    .productId(request.getProductId())
+                    .quantity(request.getQuantity())
+                    .price(productRepository.findById(request.getProductId())
+                            .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND))
+                            .getCostPrice())
+                    .build();
 
-        cart.getItems().add(cartItem);
+            cart.getItems().add(newCartItem);
+        }
+
         Cart savedCart = cartRepository.save(cart);
 
         return cartMapper.toCartResponse(savedCart);
     }
+
 
     public void removeFromCart(String customerId, String itemId) {
         Cart cart = cartRepository.findByCustomerId(customerId)

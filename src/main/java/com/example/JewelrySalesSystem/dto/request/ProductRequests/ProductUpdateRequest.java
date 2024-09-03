@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateRequest {
     @NotBlank(message = "Category ID is required")
-    String categoryName;
+    String categoryId;
     String name;
     String description;
     BigDecimal costPrice;

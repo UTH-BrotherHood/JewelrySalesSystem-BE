@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCreationRequest {
-    @NotBlank(message = "Category name is required")
-    String categoryName;
+    @NotBlank(message = "Category id is required")
+    String categoryId;
 
     @NotBlank(message = "Product name is required")
     String name;

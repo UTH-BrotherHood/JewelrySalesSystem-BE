@@ -1,12 +1,11 @@
 package com.example.JewelrySalesSystem.dto.response;
 
-import com.example.JewelrySalesSystem.dto.response.SalesOrderResponse;
-import com.example.JewelrySalesSystem.entity.SalesOrderDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -14,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SalesOrderWithDetailsResponse {
-    private SalesOrderResponse salesOrder;
-    private List<SalesOrderDetail> orderDetails;
+    SalesOrderResponse salesOrder;
+    List<SalesOrderDetailResponse> orderDetails;
+
 }

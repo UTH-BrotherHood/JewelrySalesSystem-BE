@@ -21,7 +21,7 @@ public class Product {
     String productId;
 
 
-    String categoryName;
+    String categoryId;
 
 
     String name;

@@ -1,14 +1,15 @@
 package com.example.JewelrySalesSystem.service;
 
 import com.example.JewelrySalesSystem.dto.request.SalesOrderRequests.SalesOrderCreationRequest;
-import com.example.JewelrySalesSystem.dto.request.SalesOrderRequests.SalesOrderUpdateRequest;
 import com.example.JewelrySalesSystem.dto.request.WarrantyRequests.WarrantyCreationRequest;
+import com.example.JewelrySalesSystem.dto.response.SalesOrderDetailResponse;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderResponse;
 import com.example.JewelrySalesSystem.dto.response.SalesOrderWithDetailsResponse;
 
 import com.example.JewelrySalesSystem.entity.*;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
+import com.example.JewelrySalesSystem.mapper.SalesOrderDetailMapper;
 import com.example.JewelrySalesSystem.mapper.SalesOrderMapper;
 import com.example.JewelrySalesSystem.mapper.WarrantyMapper;
 import com.example.JewelrySalesSystem.repository.*;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +38,10 @@ public class SalesOrderService {
     private final WarrantyMapper warrantyMapper;
     private final WarrantyService warrantyService;
     private final CartService cartService;
+    private final PromotionRepository promotionRepository;
+    private final SalesOrderDetailMapper salesOrderDetailMapper;
+    private final ReturnPolicyRepository returnPolicyRepository;
+    private final CustomerService customerService;
 
     @Transactional
     public SalesOrderResponse createSalesOrder(SalesOrderCreationRequest request) {
@@ -50,41 +54,99 @@ public class SalesOrderService {
             throw new AppException(ErrorCode.EMPLOYEE_NOT_FOUND);
         }
 
-        // Retrieve Cart
+        // Fetch Cart
         Cart cart = cartRepository.findByCustomerId(request.getCustomerId())
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         // Check if cart has items
         if (cart.getItems().isEmpty()) {
-            throw new AppException(ErrorCode.CART_IS_EMPTY); // Custom error code for empty cart
+            throw new AppException(ErrorCode.CART_IS_EMPTY);
         }
 
-        // Calculate totalAmount from Cart items
+        // Calculate total amount from cart items
         BigDecimal totalAmount = cart.getItems().stream()
                 .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        // Calculate member rank discount
+        BigDecimal rankDiscount = calculateRankDiscount(request.getCustomerId(), totalAmount);
+
+        // Apply promotion if available
+        BigDecimal discountedTotalAmount = totalAmount;
+        if (request.getPromotionCode() != null && !request.getPromotionCode().isEmpty()) {
+            Promotion promotion = promotionRepository.findByPromotionCode(request.getPromotionCode())
+                    .orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_FOUND));
+
+            if (LocalDateTime.now().isBefore(promotion.getStartDate()) || LocalDateTime.now().isAfter(promotion.getEndDate())) {
+                throw new AppException(ErrorCode.PROMOTION_EXPIRED);
+            }
+
+            BigDecimal discount = totalAmount.multiply(promotion.getDiscountPercentage().divide(BigDecimal.valueOf(100)));
+            discountedTotalAmount = discountedTotalAmount.subtract(discount);
+        }
+
         // Create SalesOrder and link to Cart
         SalesOrder salesOrder = salesOrderMapper.toSalesOrder(request);
         salesOrder.setCartId(cart.getCartId());
-        salesOrder.setOrderDate(LocalDateTime.now()); // Set orderDate to current date and time
-        salesOrder.setTotalAmount(totalAmount); // Set totalAmount based on cart items
+        salesOrder.setOrderDate(LocalDateTime.now());
+        salesOrder.setOriginalTotalAmount(totalAmount); // Store original total amount
+        salesOrder.setDiscountedByRank(rankDiscount); // Store member rank discount
+        salesOrder.setDiscountedTotalAmount(discountedTotalAmount.subtract(rankDiscount)); // Store discounted total amount
+
+        // Create ReturnPolicy
+        ReturnPolicy returnPolicy = createReturnPolicyForOrder(salesOrder.getOrderId());
+        salesOrder.setReturnPolicy(returnPolicy);
+
         SalesOrder savedSalesOrder = salesOrderRepository.save(salesOrder);
 
-        // Create SalesOrderDetails from Cart items
-        createSalesOrderDetailsFromCart(savedSalesOrder.getOrderId(), cart);
+        // Update customer reward points
+        BigDecimal discountAmount = totalAmount.subtract(discountedTotalAmount);
+        BigDecimal rewardPoints = discountAmount.multiply(BigDecimal.valueOf(0.1)); // Example, 10% reward points
 
-        // Clear the cart after creating the sales order
+        customerService.addRewardPoints(request.getCustomerId(), rewardPoints, "Reward points from order ID: " + savedSalesOrder.getOrderId());
+        createSalesOrderDetailsFromCart(savedSalesOrder.getOrderId(), cart, request.getPromotionCode());
+        // Clear cart
         cartService.clearCart(request.getCustomerId());
 
         return salesOrderMapper.toSalesOrderResponse(savedSalesOrder);
     }
 
+    private BigDecimal calculateRankDiscount(String customerId, BigDecimal totalAmount) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_FOUND));
 
-    private void createSalesOrderDetailsFromCart(String orderId, Cart cart) {
+        BigDecimal discount = BigDecimal.ZERO;
+        switch (customer.getRankLevel()) {
+            case "Gold":
+                discount = totalAmount.multiply(BigDecimal.valueOf(0.1)); // 10% discount
+                break;
+            case "Platinum":
+                discount = totalAmount.multiply(BigDecimal.valueOf(0.15)); // 15% discount
+                break;
+            case "Silver":
+                discount = totalAmount.multiply(BigDecimal.valueOf(0.05)); // 5% discount
+                break;
+            default:
+                // Bronze rank has no discount
+                break;
+        }
+        return discount;
+    }
+
+    private ReturnPolicy createReturnPolicyForOrder(String orderId) {
+        ReturnPolicy returnPolicy = new ReturnPolicy();
+        returnPolicy.setDescription("This order can be returned within 30 days of purchase.");
+        returnPolicy.setEffectiveDate(LocalDateTime.now());
+        returnPolicy.setExpiryDate(LocalDateTime.now().plusDays(30));
+        returnPolicyRepository.save(returnPolicy);
+        return returnPolicy;
+    }
+
+
+    private void createSalesOrderDetailsFromCart(String orderId, Cart cart, String promotionCode) {
         List<CartItem> cartItems = cart.getItems();
 
-        // Check if all products in the cart exist and have sufficient stock
+        // Check if all products exist and have sufficient stock
         List<String> invalidProductIds = cartItems.stream()
                 .filter(cartItem -> !productRepository.existsById(cartItem.getProductId()))
                 .map(CartItem::getProductId)
@@ -110,12 +172,25 @@ public class SalesOrderService {
         List<SalesOrderDetail> salesOrderDetails = cartItems.stream()
                 .map(cartItem -> {
                     BigDecimal totalPrice = cartItem.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+
+                    // Calculate price after discount
+                    BigDecimal priceAfterDiscount = totalPrice;
+                    if (promotionCode != null && !promotionCode.isEmpty()) {
+                        Promotion promotion = promotionRepository.findByPromotionCode(promotionCode)
+                                .orElse(null);
+                        if (promotion != null) {
+                            BigDecimal discount = totalPrice.multiply(promotion.getDiscountPercentage().divide(BigDecimal.valueOf(100)));
+                            priceAfterDiscount = totalPrice.subtract(discount);
+                        }
+                    }
+
                     return SalesOrderDetail.builder()
                             .orderId(orderId)
                             .productId(cartItem.getProductId())
                             .quantity(cartItem.getQuantity())
                             .unitPrice(cartItem.getPrice())
                             .totalPrice(totalPrice)
+                            .priceAfterDiscount(priceAfterDiscount) // Set price after discount
                             .build();
                 }).collect(Collectors.toList());
 
@@ -138,7 +213,6 @@ public class SalesOrderService {
             }
         });
     }
-
 
 
     public void deleteSalesOrder(String orderId) {
@@ -183,9 +257,14 @@ public class SalesOrderService {
 
         List<SalesOrderDetail> orderDetails = salesOrderDetailRepository.findByOrderId(orderId);
 
+        // Convert SalesOrderDetail list to SalesOrderDetailResponse list
+        List<SalesOrderDetailResponse> orderDetailResponses = orderDetails.stream()
+                .map(salesOrderDetailMapper::toSalesOrderDetailResponse)
+                .collect(Collectors.toList());
+
         return SalesOrderWithDetailsResponse.builder()
                 .salesOrder(salesOrderMapper.toSalesOrderResponse(salesOrder))
-                .orderDetails(orderDetails)
+                .orderDetails(orderDetailResponses)
                 .build();
     }
 }
