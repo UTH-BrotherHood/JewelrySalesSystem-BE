@@ -42,6 +42,7 @@ public class SalesOrderService {
     private final SalesOrderDetailMapper salesOrderDetailMapper;
     private final ReturnPolicyRepository returnPolicyRepository;
     private final CustomerService customerService;
+    private final EmailService emailService;
 
     @Transactional
     public SalesOrderResponse createSalesOrder(SalesOrderCreationRequest request) {
@@ -108,8 +109,85 @@ public class SalesOrderService {
         // Clear cart
         cartService.clearCart(request.getCustomerId());
 
+        // Fetch Customer for email
+        Customer customer = customerRepository.findById(request.getCustomerId())
+                .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_FOUND));
+
+        // Gửi hóa đơn qua email
+        String invoiceContent = generateInvoiceContent(savedSalesOrder); // Tạo nội dung hóa đơn
+        emailService.sendInvoiceEmail(customer.getEmail(), "Hóa Đơn Của Bạn", invoiceContent);
+
+        // Kiểm tra và thông báo lên hạng nếu có
+        if (customerService.checkForRankUpgrade(request.getCustomerId())) {
+            String rankUpgradeContent = generateRankUpgradeNotification(customer); // Tạo nội dung thông báo lên hạng
+            emailService.sendInvoiceEmail(customer.getEmail(), "Thông Báo Lên Hạng", rankUpgradeContent);
+        }
+
         return salesOrderMapper.toSalesOrderResponse(savedSalesOrder);
     }
+
+    private String generateInvoiceContent(SalesOrder savedSalesOrder) {
+        // Giả sử bạn có một phương thức để lấy chi tiết đơn hàng
+        List<SalesOrderDetail> orderDetails = salesOrderDetailRepository.findByOrderId(savedSalesOrder.getOrderId());
+
+        // Tạo nội dung hóa đơn HTML từ thông tin đơn hàng
+        StringBuilder content = new StringBuilder();
+        content.append("<h1>Hóa Đơn</h1>")
+                .append("<p>Mã Đơn Hàng: ").append(savedSalesOrder.getOrderId()).append("</p>")
+                .append("<p>Ngày Đặt Hàng: ").append(savedSalesOrder.getOrderDate()).append("</p>")
+                .append("<table border='1' cellpadding='5' cellspacing='0'>")
+                .append("<thead><tr><th>Sản phẩm</th><th>Số lượng</th><th>Đơn Giá</th><th>Thành Tiền</th></tr></thead>")
+                .append("<tbody>");
+
+        for (SalesOrderDetail detail : orderDetails) {
+            content.append("<tr>")
+                    .append("<td>").append(detail.getProductId()).append("</td>")
+                    .append("<td>").append(detail.getQuantity()).append("</td>")
+                    .append("<td>").append(detail.getUnitPrice()).append("</td>")
+                    .append("<td>").append(detail.getTotalPrice()).append("</td>")
+                    .append("</tr>");
+        }
+
+        content.append("</tbody>")
+                .append("</table>")
+                .append("<p>Tổng Giá Trị: ").append(savedSalesOrder.getOriginalTotalAmount()).append("</p>")
+                .append("<p>Giảm Giá Theo Hạng: ").append(savedSalesOrder.getDiscountedByRank()).append("</p>")
+                .append("<p>Giá Trị Sau Giảm Giá: ").append(savedSalesOrder.getDiscountedTotalAmount()).append("</p>")
+                .append("<p>Cảm ơn bạn đã mua hàng!</p>");
+
+        return content.toString();
+    }
+    private String generateRankUpgradeNotification(Customer customer) {
+        String rank = customer.getRankLevel();
+        String benefits = "";
+
+        // Thêm thông tin lợi ích tùy thuộc vào cấp bậc
+        switch (rank) {
+            case "Bronze":
+                benefits = "5% giảm giá cho các đơn hàng tiếp theo.";
+                break;
+            case "Silver":
+                benefits = "10% giảm giá và quà tặng miễn phí cho các đơn hàng tiếp theo.";
+                break;
+            case "Gold":
+                benefits = "15% giảm giá, quà tặng miễn phí và giao hàng miễn phí.";
+                break;
+            case "Platinum":
+                benefits = "20% giảm giá, quà tặng cao cấp, và dịch vụ chăm sóc khách hàng ưu tiên.";
+                break;
+            default:
+                benefits = "Cảm ơn bạn đã là khách hàng thân thiết của chúng tôi!";
+                break;
+        }
+
+        // Tạo nội dung thông báo lên hạng
+        return "<h1>Chúc Mừng!</h1>" +
+                "<p>Bạn đã được nâng cấp lên hạng <strong>" + rank + "</strong>!</p>" +
+                "<p>Chúc mừng bạn đã trở thành khách hàng thân thiết của chúng tôi.</p>" +
+                "<p>Lợi ích mới của bạn bao gồm: " + benefits + "</p>" +
+                "<p>Cảm ơn bạn đã ủng hộ và gắn bó với chúng tôi!</p>";
+    }
+
 
     private BigDecimal calculateRankDiscount(String customerId, BigDecimal totalAmount) {
         Customer customer = customerRepository.findById(customerId)

@@ -16,6 +16,8 @@ import com.example.JewelrySalesSystem.repository.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,6 +34,7 @@ public class CustomerService {
     CustomerMapper customerMapper;
     RoleRepository roleRepository;
     RewardPointHistoryRepository rewardPointHistoryRepository;
+    private final JavaMailSenderImpl mailSender;
 
     public CustomerResponse createCustomer(CustomerCreationRequest request) {
         // Check if the customer name already exists
@@ -113,17 +116,51 @@ public class CustomerService {
     // Cập nhật cấp độ thành viên dựa trên điểm thưởng
     private void updateCustomerRank(Customer customer) {
         Integer points = customer.getRewardPoints();
-        String rankLever = "Bronze"; // Mặc định là Bronze
+        String rankLevel = "Bronze"; // Default is Bronze
 
-        if (points >= 1000) {
-            rankLever = "Platinum";
-        } else if (points >= 500) {
-            rankLever = "Gold";
-        } else if (points >= 200) {
-            rankLever = "Silver";
+        if (points >= 10000) {
+            rankLevel = "Platinum";
+        } else if (points >= 5000) {
+            rankLevel = "Gold";
+        } else if (points >= 2000) {
+            rankLevel = "Silver";
+        } else {
+            rankLevel = "Bronze";
         }
 
-        customer.setRankLevel(rankLever);
+        customer.setRankLevel(rankLevel);
         customerRepository.save(customer);
     }
+
+
+    public boolean checkForRankUpgrade(String customerId) {
+        // Lấy thông tin khách hàng từ cơ sở dữ liệu
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_FOUND));
+
+        Integer rewardPoints = customer.getRewardPoints();  // Số điểm thưởng hiện tại của khách hàng
+        String currentRank = customer.getRankLevel();  // Cấp bậc hiện tại của khách hàng
+        String newRank = currentRank;  // Khởi tạo cấp bậc mới
+
+        // Kiểm tra điều kiện nâng hạng dựa trên số điểm thưởng
+        if (rewardPoints >= 10000 && !"Platinum".equals(currentRank)) {
+            newRank = "Platinum";
+        } else if (rewardPoints >= 5000 && !"Gold".equals(currentRank)) {
+            newRank = "Gold";
+        } else if (rewardPoints >= 2000 && !"Silver".equals(currentRank)) {
+            newRank = "Silver";
+        } else if (rewardPoints >= 500 && !"Bronze".equals(currentRank)) {
+            newRank = "Bronze";
+        }
+
+        // Nếu có sự thay đổi cấp bậc, cập nhật và lưu khách hàng
+        if (!newRank.equals(currentRank)) {
+            customer.setRankLevel(newRank);
+            customerRepository.save(customer);
+            return true;  // Đã nâng hạng
+        }
+
+        return false;  // Không có sự thay đổi
+    }
+
 }
