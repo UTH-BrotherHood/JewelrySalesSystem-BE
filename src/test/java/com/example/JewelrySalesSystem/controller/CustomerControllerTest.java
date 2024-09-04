@@ -85,7 +85,6 @@ class CustomerControllerTest {
                 .address("TP HCM")
                 .email("vuong@yopmail.com")
                 .phone("0123456789")
-                .rewardPoints(10)
                 .build();
         String content = objectMapper.writeValueAsString(request);
 
