@@ -90,7 +90,7 @@ public class EmployeeControllerTest {
         objectMapper.registerModule(new JavaTimeModule()); // Đăng ký module để mapper có thể serialize được LocalDateTime
         String content = objectMapper.writeValueAsString(employeeCreationRequest);
 
-        // Giả lập kết quả cho sự kiện createCategory
+        // Giả lập kết quả cho sự kiện createEmployee
         when(employeeService.createEmployee(any())).thenReturn(employeeResponse);
 
         // Giả lập request, ko check ngày vì sợ sau này có thể thay đổi format, chủ yếu mình check những dữ liệu khác như statuscode, content.
