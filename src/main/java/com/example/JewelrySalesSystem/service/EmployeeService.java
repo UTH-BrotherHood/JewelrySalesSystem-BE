@@ -53,8 +53,8 @@ public class EmployeeService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeResponse> getEmployees() {
+        return employeeRepository.findAll().stream().map(employeeMapper::toEmployeeResponse).toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name or hasRole('ADMIN')")
