@@ -26,6 +26,10 @@ public class SalesOrder {
     String customerId;
     String employeeId;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id")
+    PaymentMethod paymentMethod;
+
     String cartId;
 
     @Column(nullable = false)
@@ -51,5 +55,7 @@ public class SalesOrder {
     @UpdateTimestamp
     @Column(nullable = false)
     LocalDateTime updatedAt;
+
+
 }
 

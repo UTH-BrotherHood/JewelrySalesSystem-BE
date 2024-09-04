@@ -43,6 +43,7 @@ public class SalesOrderService {
     private final ReturnPolicyRepository returnPolicyRepository;
     private final CustomerService customerService;
     private final EmailService emailService;
+    private final PaymentMethodRepository paymentMethodRepository;
 
     @Transactional
     public SalesOrderResponse createSalesOrder(SalesOrderCreationRequest request) {
@@ -53,6 +54,11 @@ public class SalesOrderService {
 
         if (!employeeRepository.existsById(request.getEmployeeId())) {
             throw new AppException(ErrorCode.EMPLOYEE_NOT_FOUND);
+        }
+
+        // Validate payment method
+        if (!paymentMethodRepository.existsById(request.getPaymentMethodId())) {
+            throw new AppException(ErrorCode.PAYMENT_METHOD_NOT_FOUND);
         }
 
         // Fetch Cart
@@ -94,6 +100,11 @@ public class SalesOrderService {
         salesOrder.setDiscountedByRank(rankDiscount); // Store member rank discount
         salesOrder.setDiscountedTotalAmount(discountedTotalAmount.subtract(rankDiscount)); // Store discounted total amount
 
+        // Set PaymentMethod
+        PaymentMethod paymentMethod = paymentMethodRepository.findById(request.getPaymentMethodId())
+                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_METHOD_NOT_FOUND));
+        salesOrder.setPaymentMethod(paymentMethod);
+
         // Create ReturnPolicy
         ReturnPolicy returnPolicy = createReturnPolicyForOrder(salesOrder.getOrderId());
         salesOrder.setReturnPolicy(returnPolicy);
@@ -113,14 +124,14 @@ public class SalesOrderService {
         Customer customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new AppException(ErrorCode.CUSTOMER_NOT_FOUND));
 
-        // Gửi hóa đơn qua email
-        String invoiceContent = generateInvoiceContent(savedSalesOrder); // Tạo nội dung hóa đơn
-        emailService.sendInvoiceEmail(customer.getEmail(), "Hóa Đơn Của Bạn", invoiceContent);
+        // Send invoice via email
+        String invoiceContent = generateInvoiceContent(savedSalesOrder); // Generate invoice content
+        emailService.sendInvoiceEmail(customer.getEmail(), "Your Invoice", invoiceContent);
 
-        // Kiểm tra và thông báo lên hạng nếu có
+        // Check and notify rank upgrade if any
         if (customerService.checkForRankUpgrade(request.getCustomerId())) {
-            String rankUpgradeContent = generateRankUpgradeNotification(customer); // Tạo nội dung thông báo lên hạng
-            emailService.sendInvoiceEmail(customer.getEmail(), "Thông Báo Lên Hạng", rankUpgradeContent);
+            String rankUpgradeContent = generateRankUpgradeNotification(customer); // Generate rank upgrade notification
+            emailService.sendInvoiceEmail(customer.getEmail(), "Rank Upgrade Notification", rankUpgradeContent);
         }
 
         return salesOrderMapper.toSalesOrderResponse(savedSalesOrder);

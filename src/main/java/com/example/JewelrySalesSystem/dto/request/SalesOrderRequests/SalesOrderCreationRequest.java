@@ -19,6 +19,9 @@ public class SalesOrderCreationRequest {
     @NotNull(message = "Employee ID is required")
     String employeeId;
 
+    @NotNull(message = "Payment method ID is required")
+    String paymentMethodId;
+    
     String promotionCode;
 }
 

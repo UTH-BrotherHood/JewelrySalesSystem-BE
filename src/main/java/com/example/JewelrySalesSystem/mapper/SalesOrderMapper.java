@@ -10,8 +10,10 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface SalesOrderMapper {
+    @Mapping(source = "paymentMethodId", target = "paymentMethod.paymentMethodId")
     SalesOrder toSalesOrder(SalesOrderCreationRequest request);
 
+    @Mapping(source = "paymentMethod", target = "paymentMethod")
     @Mapping(source = "returnPolicy", target = "returnPolicy")
     @Mapping(source = "originalTotalAmount", target = "originalTotalAmount")
     @Mapping(source = "discountedTotalAmount", target = "discountedTotalAmount")

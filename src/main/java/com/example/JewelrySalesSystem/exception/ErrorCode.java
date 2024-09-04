@@ -117,6 +117,7 @@ public enum ErrorCode {
 
     RESOURCE_NOT_FOUND(404, "Resource not found", HttpStatus.NOT_FOUND),
 
+    PAYMENT_METHOD_NOT_FOUND(404, "Payment Method not found", HttpStatus.NOT_FOUND),
     RETURN_POLICY_NOT_FOUND(404, "Return policy not found", HttpStatus.NOT_FOUND),
     PROMOTION_EXPIRED(400, "Promotion expired", HttpStatus.BAD_REQUEST),
     PROMOTION_ALREADY_EXISTS(400, "Promotion already exists", HttpStatus.BAD_REQUEST),
