@@ -30,9 +30,9 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ApiResponse<List<Employee>> getEmployees() {
-        ApiResponse<List<Employee>> apiResponse = new ApiResponse<>();
-        List<Employee> employees = employeeService.getEmployees();
+    public ApiResponse<List<EmployeeResponse>> getEmployees() {
+        ApiResponse<List<EmployeeResponse>> apiResponse = new ApiResponse<>();
+        List<EmployeeResponse> employees = employeeService.getEmployees();
         apiResponse.setCode(200);
         apiResponse.setMessage("Employees retrieved successfully");
         apiResponse.setResult(employees);
