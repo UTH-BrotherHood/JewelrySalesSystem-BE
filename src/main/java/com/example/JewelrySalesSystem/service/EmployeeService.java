@@ -63,7 +63,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
-    @PreAuthorize("hasAuthority('REJECT_POST')")
+
     public EmployeeResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();

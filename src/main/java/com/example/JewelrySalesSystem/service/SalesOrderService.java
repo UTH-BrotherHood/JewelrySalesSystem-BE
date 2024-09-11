@@ -61,8 +61,8 @@ public class SalesOrderService {
             throw new AppException(ErrorCode.PAYMENT_METHOD_NOT_FOUND);
         }
 
-        // Fetch Cart
-        Cart cart = cartRepository.findByCustomerId(request.getCustomerId())
+        // Fetch Cart using employeeId
+        Cart cart = cartRepository.findByEmployeeId(request.getEmployeeId())
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         // Check if cart has items
@@ -118,7 +118,7 @@ public class SalesOrderService {
         customerService.addRewardPoints(request.getCustomerId(), rewardPoints, "Reward points from order ID: " + savedSalesOrder.getOrderId());
         createSalesOrderDetailsFromCart(savedSalesOrder.getOrderId(), cart, request.getPromotionCode());
         // Clear cart
-        cartService.clearCart(request.getCustomerId());
+        cartService.clearCart(request.getEmployeeId()); // Clear cart using employeeId
 
         // Fetch Customer for email
         Customer customer = customerRepository.findById(request.getCustomerId())
@@ -136,6 +136,7 @@ public class SalesOrderService {
 
         return salesOrderMapper.toSalesOrderResponse(savedSalesOrder);
     }
+
 
     private String generateInvoiceContent(SalesOrder savedSalesOrder) {
         // Giả sử bạn có một phương thức để lấy chi tiết đơn hàng

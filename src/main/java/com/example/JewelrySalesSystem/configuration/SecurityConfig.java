@@ -37,9 +37,12 @@ public class SecurityConfig {
             "/products/{productId}",
             "/sales-orders",
             "/statistics",
-            "/promotions/{promotionId}",
+            "/promotions/{promotionCode}",
             "/return-policy",
             "/categories",
+
+//            "customers/by-name",
+//            "cart/{customerId}"
 //            "/h2-console/**"
     };
 

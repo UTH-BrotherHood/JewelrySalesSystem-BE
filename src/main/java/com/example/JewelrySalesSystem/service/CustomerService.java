@@ -92,7 +92,13 @@ public class CustomerService {
         customerRepository.deleteById(customerId);
     }
 
+    public CustomerResponse getCustomerByName(String customerName) {
+        // Retrieve the customer by name
+        Customer customer = customerRepository.findByCustomername(customerName)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
+        return customerMapper.toCustomerResponse(customer);
+    }
 
     // Cập nhật điểm thưởng cho khách hàng
     public void addRewardPoints(String customerId, BigDecimal points, String description) {

@@ -5,11 +5,13 @@ import com.example.JewelrySalesSystem.dto.request.CartItemRequest;
 import com.example.JewelrySalesSystem.dto.response.CartResponse;
 import com.example.JewelrySalesSystem.entity.Cart;
 import com.example.JewelrySalesSystem.entity.CartItem;
+import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.CartMapper;
 import com.example.JewelrySalesSystem.repository.CartRepository;
 import com.example.JewelrySalesSystem.repository.CustomerRepository;
+import com.example.JewelrySalesSystem.repository.EmployeeRepository;
 import com.example.JewelrySalesSystem.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,29 +27,44 @@ public class CartService {
     private final ProductRepository productRepository;
     private final CartMapper cartMapper;
     private final CustomerRepository customerRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public CartResponse getCartByCustomerId(String customerId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
+    public CartResponse getCartByemployeeId(String employeeId) {
+        // Check if the cart exists for the given employeeId
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
+                .orElseGet(() -> {
+                    // Create a new empty cart if not found
+                    Cart newCart = Cart.builder()
+                            .employeeId(employeeId)
+                            .items(new ArrayList<>()) // Initialize items list
+                            .build();
+                    return cartRepository.save(newCart); // Save the new cart
+                });
+
+        // Return the cart response
         return cartMapper.toCartResponse(cart);
     }
 
-    public CartResponse addToCart(String customerId, CartItemRequest request) {
+    public CartResponse addToCart(String employeeId, CartItemRequest request) {
         // Kiểm tra xem khách hàng có tồn tại không
-        if (!customerRepository.existsById(customerId)) {
-            throw new AppException(ErrorCode.CUSTOMER_NOT_FOUND);
+        if (!employeeRepository.existsById(employeeId)) {
+            throw new AppException(ErrorCode.EMPLOYEE_NOT_FOUND);
         }
 
         // Tìm hoặc tạo mới giỏ hàng cho khách hàng
-        Cart cart = cartRepository.findByCustomerId(customerId)
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
                 .orElseGet(() -> {
-                    // Tạo giỏ hàng mới nếu chưa có cho customerId
+                    // Tạo giỏ hàng mới nếu chưa có cho employeeId
                     Cart newCart = Cart.builder()
-                            .customerId(customerId)
+                            .employeeId(employeeId)
                             .items(new ArrayList<>()) // Khởi tạo danh sách items
                             .build();
                     return cartRepository.save(newCart);
                 });
+
+        // Lấy thông tin sản phẩm từ ProductRepository
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
 
         // Tìm CartItem đã tồn tại trong giỏ hàng
         CartItem existingCartItem = cart.getItems().stream()
@@ -59,18 +76,16 @@ public class CartService {
             // Cập nhật số lượng nếu sản phẩm đã tồn tại trong giỏ hàng
             existingCartItem.setQuantity(existingCartItem.getQuantity() + request.getQuantity());
             // Cập nhật giá (nếu cần) và lưu giỏ hàng
-            existingCartItem.setPrice(productRepository.findById(request.getProductId())
-                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND))
-                    .getCostPrice());
+            existingCartItem.setPrice(product.getCostPrice());
         } else {
             // Tạo mới CartItem và thêm vào giỏ hàng
             CartItem newCartItem = CartItem.builder()
                     .cart(cart)
                     .productId(request.getProductId())
+                    .productName(product.getName()) // Lấy tên sản phẩm từ product
+                    .productImageUrl(product.getImageUrl()) // Lấy URL hình ảnh sản phẩm từ product
                     .quantity(request.getQuantity())
-                    .price(productRepository.findById(request.getProductId())
-                            .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND))
-                            .getCostPrice())
+                    .price(product.getCostPrice())
                     .build();
 
             cart.getItems().add(newCartItem);
@@ -82,8 +97,9 @@ public class CartService {
     }
 
 
-    public void removeFromCart(String customerId, String itemId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
+
+    public void removeFromCart(String employeeId, String itemId) {
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         boolean itemExists = cart.getItems().removeIf(item -> item.getItemId().equals(itemId));
@@ -92,15 +108,15 @@ public class CartService {
         }
         cartRepository.save(cart);
     }
-    public void clearCart(String customerId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
+    public void clearCart(String employeeId) {
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         cart.getItems().clear();
         cartRepository.save(cart);
     }
-    public void increaseItemQuantity(String customerId, String itemId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
+    public void increaseItemQuantity(String employeeId, String itemId) {
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         Optional<CartItem> cartItemOpt = cart.getItems().stream()
@@ -117,8 +133,8 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public void decreaseItemQuantity(String customerId, String itemId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
+    public void decreaseItemQuantity(String employeeId, String itemId) {
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
         Optional<CartItem> cartItemOpt = cart.getItems().stream()

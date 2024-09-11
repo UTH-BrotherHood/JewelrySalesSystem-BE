@@ -1,6 +1,7 @@
 package com.example.JewelrySalesSystem.dto.response;
 
 import com.example.JewelrySalesSystem.entity.Product;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +21,7 @@ public class ProductResponse {
     BigDecimal costPrice;
     BigDecimal weight;
     BigDecimal laborCost;
+    String imageUrl;
     BigDecimal stoneCost;
     Integer stockQuantity;
     LocalDateTime createdAt;

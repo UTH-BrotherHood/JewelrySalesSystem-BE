@@ -56,7 +56,7 @@ public class ProductService {
     }
 
     public Page<ProductResponse> getProducts(
-            int page, int size, String name, BigDecimal minCostPrice, BigDecimal maxCostPrice, String sortBy, String sortOrder) {
+            int page, int size, String name, BigDecimal minCostPrice, BigDecimal maxCostPrice, String sortBy, String sortOrder, String categoryId) {
 
         Specification<Product> spec = Specification.where(null);
 
@@ -72,6 +72,10 @@ public class ProductService {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("costPrice"), maxCostPrice));
         }
 
+        if (categoryId != null && !categoryId.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("categoryId"), categoryId));
+        }
+
         Sort.Direction direction = Sort.Direction.fromString(sortOrder);
         Sort sort = Sort.by(direction, sortBy);
 
@@ -80,6 +84,7 @@ public class ProductService {
         return productRepository.findAll(spec, pageRequest)
                 .map(productMapper::toProductResponse);
     }
+
 
     public ProductResponse getProduct(String productId) {
         Product product = productRepository.findById(productId)

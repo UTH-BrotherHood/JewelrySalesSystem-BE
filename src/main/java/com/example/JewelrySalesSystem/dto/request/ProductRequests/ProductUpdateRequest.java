@@ -1,6 +1,7 @@
 package com.example.JewelrySalesSystem.dto.request.ProductRequests;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,6 +17,8 @@ public class ProductUpdateRequest {
     String categoryId;
     String name;
     String description;
+
+    String imageUrl;
     BigDecimal costPrice;
     BigDecimal weight;
     BigDecimal laborCost;

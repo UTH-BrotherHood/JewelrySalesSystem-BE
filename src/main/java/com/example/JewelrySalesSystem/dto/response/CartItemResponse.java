@@ -10,9 +10,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItemResponse {
-    private String itemId;
-    private String productId;
-
-    private Integer quantity;
-    private BigDecimal price;
+     String itemId;
+     String productId;
+     String productImageUrl;
+     String productName;
+     Integer quantity;
+     BigDecimal price;
 }

@@ -9,7 +9,9 @@ import com.example.JewelrySalesSystem.repository.PaymentMethodRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +42,14 @@ public class PaymentMethodService {
                 .orElseThrow(() -> new IllegalArgumentException("Payment Method not found"));
         return paymentMethodMapper.toPaymentMethodResponse(paymentMethod);
     }
+
+    public List<PaymentMethodResponse> getAllPaymentMethods() {
+        List<PaymentMethod> paymentMethods = paymentMethodRepository.findAll();
+        return paymentMethods.stream()
+                .map(paymentMethodMapper::toPaymentMethodResponse)
+                .collect(Collectors.toList());
+    }
+
 
     // Other methods like update, delete can be added here
 }

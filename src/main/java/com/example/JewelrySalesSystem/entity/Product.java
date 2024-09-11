@@ -26,6 +26,7 @@ public class Product {
 
     String name;
 
+    String imageUrl;
 
     String description;
 
@@ -34,7 +35,6 @@ public class Product {
 
 
     BigDecimal weight;
-
 
     BigDecimal laborCost;
 

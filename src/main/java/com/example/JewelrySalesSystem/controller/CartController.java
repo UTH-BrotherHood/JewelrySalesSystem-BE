@@ -18,9 +18,9 @@ import jakarta.validation.Valid;
 public class CartController {
     private final CartService cartService;
 
-    @GetMapping("/{customerId}")
-    public ApiResponse<CartResponse> getCart(@PathVariable String customerId) {
-        CartResponse cartResponse = cartService.getCartByCustomerId(customerId);
+    @GetMapping("/{employeeId}")
+    public ApiResponse<CartResponse> getCart(@PathVariable String employeeId) {
+        CartResponse cartResponse = cartService.getCartByemployeeId(employeeId);
         ApiResponse<CartResponse> apiResponse = new ApiResponse<>();
         apiResponse.setCode(200);
         apiResponse.setMessage("Cart retrieved successfully");
@@ -28,11 +28,11 @@ public class CartController {
         return apiResponse;
     }
 
-    @PostMapping("/{customerId}/add")
+    @PostMapping("/{employeeId}/add")
     public ResponseEntity<ApiResponse<CartResponse>> addToCart(
-            @PathVariable String customerId,
+            @PathVariable String employeeId,
             @Valid @RequestBody CartItemRequest request) {
-        CartResponse cartResponse = cartService.addToCart(customerId, request);
+        CartResponse cartResponse = cartService.addToCart(employeeId, request);
         ApiResponse<CartResponse> apiResponse = new ApiResponse<>();
         apiResponse.setCode(201);
         apiResponse.setMessage("Item added to cart successfully");
@@ -40,9 +40,9 @@ public class CartController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{customerId}/remove/{itemId}")
-    public ApiResponse<Void> removeFromCart(@PathVariable String customerId, @PathVariable String itemId) {
-        cartService.removeFromCart(customerId, itemId);
+    @DeleteMapping("/{employeeId}/remove/{itemId}")
+    public ApiResponse<Void> removeFromCart(@PathVariable String employeeId, @PathVariable String itemId) {
+        cartService.removeFromCart(employeeId, itemId);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(204);
         apiResponse.setMessage("Item removed from cart successfully");
@@ -50,19 +50,19 @@ public class CartController {
         return apiResponse;
     }
 
-    @DeleteMapping("/{customerId}/clear")
-    public ApiResponse<Void> clearCart(@PathVariable String customerId) {
-        cartService.clearCart(customerId);
+    @DeleteMapping("/{employeeId}/clear")
+    public ApiResponse<Void> clearCart(@PathVariable String employeeId) {
+        cartService.clearCart(employeeId);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(204);
         apiResponse.setMessage("Cart cleared successfully");
         apiResponse.setResult(null);
         return apiResponse;
     }
-    @PatchMapping("/{customerId}/increase/{itemId}")
+    @PatchMapping("/{employeeId}/increase/{itemId}")
     public ApiResponse<Void> increaseItemQuantity(
-            @PathVariable String customerId, @PathVariable String itemId) {
-        cartService.increaseItemQuantity(customerId, itemId);
+            @PathVariable String employeeId, @PathVariable String itemId) {
+        cartService.increaseItemQuantity(employeeId, itemId);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(200);
         apiResponse.setMessage("Item quantity increased successfully");
@@ -70,10 +70,10 @@ public class CartController {
         return apiResponse;
     }
 
-    @PatchMapping("/{customerId}/decrease/{itemId}")
+    @PatchMapping("/{employeeId}/decrease/{itemId}")
     public ApiResponse<Void> decreaseItemQuantity(
-            @PathVariable String customerId, @PathVariable String itemId) {
-        cartService.decreaseItemQuantity(customerId, itemId);
+            @PathVariable String employeeId, @PathVariable String itemId) {
+        cartService.decreaseItemQuantity(employeeId, itemId);
         ApiResponse<Void> apiResponse = new ApiResponse<>();
         apiResponse.setCode(200);
         apiResponse.setMessage("Item quantity decreased successfully");

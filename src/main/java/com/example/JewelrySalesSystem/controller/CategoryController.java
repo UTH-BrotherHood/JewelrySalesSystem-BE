@@ -63,13 +63,18 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ApiResponse<Page<CategoryResponse>> getCategories(Pageable pageable) {
+    public ApiResponse<Page<CategoryResponse>> getCategories(
+            @RequestParam(required = false) String categoryName,
+            Pageable pageable) {
+
         ApiResponse<Page<CategoryResponse>> apiResponse = new ApiResponse<>();
-        Page<CategoryResponse> categories = categoryService.getCategories(pageable);
+        Page<CategoryResponse> categories = categoryService.getCategories(pageable, categoryName);
         apiResponse.setCode(200);
         apiResponse.setMessage("Categories retrieved successfully");
         apiResponse.setResult(categories);
         return apiResponse;
     }
+
+
 
 }

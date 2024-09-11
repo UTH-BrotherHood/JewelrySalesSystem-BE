@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/payment-methods")
 @RequiredArgsConstructor
@@ -39,5 +41,13 @@ public class PaymentMethodController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-
+    @GetMapping
+    public ApiResponse<List<PaymentMethodResponse>> getAllPaymentMethods() {
+        List<PaymentMethodResponse> paymentMethodResponses = paymentMethodService.getAllPaymentMethods();
+        ApiResponse<List<PaymentMethodResponse>> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Payment methods retrieved successfully");
+        apiResponse.setResult(paymentMethodResponses);
+        return apiResponse;
+    }
 }

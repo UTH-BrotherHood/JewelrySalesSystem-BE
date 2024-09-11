@@ -14,7 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartResponse {
     String cartId;
-    String customerId;
+    String employeeId;
     List<CartItemResponse> items;
     BigDecimal totalAmount;
 }

@@ -62,10 +62,11 @@ public class ProductController {
             @RequestParam(required = false) BigDecimal minCostPrice,
             @RequestParam(required = false) BigDecimal maxCostPrice,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
+            @RequestParam(defaultValue = "asc") String sortOrder,
+            @RequestParam(required = false) String categoryId) {
 
         ApiResponse<Page<ProductResponse>> apiResponse = new ApiResponse<>();
-        Page<ProductResponse> products = productService.getProducts(page, size, name, minCostPrice, maxCostPrice, sortBy, sortOrder);
+        Page<ProductResponse> products = productService.getProducts(page, size, name, minCostPrice, maxCostPrice, sortBy, sortOrder, categoryId);
         apiResponse.setCode(200);
         apiResponse.setMessage("Products retrieved successfully");
         apiResponse.setResult(products);

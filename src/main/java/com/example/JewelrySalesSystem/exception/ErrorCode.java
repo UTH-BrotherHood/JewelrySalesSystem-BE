@@ -123,7 +123,8 @@ public enum ErrorCode {
     PROMOTION_ALREADY_EXISTS(400, "Promotion already exists", HttpStatus.BAD_REQUEST),
     CART_IS_EMPTY(404, "Cart is empty", HttpStatus.BAD_REQUEST),
     ITEM_NOT_FOUND_IN_CART(404, "Item not found in cart", HttpStatus.NOT_FOUND),
-    CART_NOT_FOUND(404, "Cart not found", HttpStatus.NOT_FOUND),
+    CART_EMPTY(400,"Cart is empty", HttpStatus.BAD_REQUEST),
+    CART_NOT_FOUND(404, "Cart not found or The customer has not yet created a store", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(400, "ROLE NOT FOUND",HttpStatus.BAD_REQUEST);
 
 

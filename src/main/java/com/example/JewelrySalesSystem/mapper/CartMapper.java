@@ -24,7 +24,7 @@ public class CartMapper {
 
         return CartResponse.builder()
                 .cartId(cart.getCartId())
-                .customerId(cart.getCustomerId())
+                .employeeId(cart.getEmployeeId())
                 .items(itemResponses)
                 .totalAmount(totalAmount)
                 .build();
@@ -34,6 +34,8 @@ public class CartMapper {
         return CartItemResponse.builder()
                 .itemId(cartItem.getItemId())
                 .productId(cartItem.getProductId())
+                .productImageUrl(cartItem.getProductImageUrl())
+                .productName(cartItem.getProductName())
                 .quantity(cartItem.getQuantity())
                 .price(cartItem.getPrice())
                 .build();

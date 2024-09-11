@@ -23,7 +23,7 @@ public class Cart {
     @Column(updatable = false, nullable = false)
     private String cartId;
 
-    private String customerId;
+    private String employeeId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();

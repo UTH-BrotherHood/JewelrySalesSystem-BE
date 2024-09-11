@@ -4,6 +4,7 @@ import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryCreat
 import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.CategoryResponse;
 import com.example.JewelrySalesSystem.entity.Category;
+import com.example.JewelrySalesSystem.entity.Product;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
 import com.example.JewelrySalesSystem.mapper.CategoryMapper;
@@ -11,7 +12,10 @@ import com.example.JewelrySalesSystem.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -54,8 +58,17 @@ public class CategoryService {
         return categoryMapper.toCategoryResponse(category);
     }
 
-    public Page<CategoryResponse> getCategories(Pageable pageable) {
-        return categoryRepository.findAll(pageable)
+    public Page<CategoryResponse> getCategories(Pageable pageable, String categoryName) {
+        Specification<Category> spec = Specification.where(null);
+
+        if (categoryName != null && !categoryName.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(root.get("categoryName"), "%" + categoryName + "%"));
+        }
+
+        return categoryRepository.findAll(spec, pageable)
                 .map(categoryMapper::toCategoryResponse);
     }
+
+
 }

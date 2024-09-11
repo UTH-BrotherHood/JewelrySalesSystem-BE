@@ -24,6 +24,9 @@ public class ProductCreationRequest {
     @NotNull(message = "Cost price is required")
     BigDecimal costPrice;
 
+    @NotNull(message = "imageUrl is required")
+    String imageUrl;
+
     @NotNull(message = "Weight is required")
     BigDecimal weight;
 

@@ -22,7 +22,8 @@ public class CartItem {
     @JoinColumn(name = "cart_id", nullable = false)
     Cart cart;
 
-
+String productImageUrl;
+String productName;
     @Column(nullable = false)
     String productId;
 

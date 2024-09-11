@@ -78,6 +78,14 @@ public class CustomerController {
                 .build();
     }
 
-
+    @GetMapping("/by-name")
+    public ApiResponse<CustomerResponse> getCustomerByName(@RequestParam("name") String customerName) {
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>();
+        CustomerResponse customer = customerService.getCustomerByName(customerName);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Customer retrieved successfully");
+        apiResponse.setResult(customer);
+        return apiResponse;
+    }
 
 }
