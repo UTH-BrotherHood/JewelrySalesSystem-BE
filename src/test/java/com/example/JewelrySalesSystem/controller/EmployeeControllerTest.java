@@ -2,14 +2,11 @@ package com.example.JewelrySalesSystem.controller;
 
 
 import com.example.JewelrySalesSystem.constant.PredefinedRole;
-import com.example.JewelrySalesSystem.dto.request.CategoryRequests.CategoryUpdateRequest;
 import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreationRequest;
 import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeUpdateRequest;
-import com.example.JewelrySalesSystem.dto.response.CategoryResponse;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.dto.response.PermissionResponse;
 import com.example.JewelrySalesSystem.dto.response.RoleResponse;
-import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -22,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
@@ -96,7 +90,7 @@ public class EmployeeControllerTest {
         objectMapper.registerModule(new JavaTimeModule()); // Đăng ký module để mapper có thể serialize được LocalDateTime
         String content = objectMapper.writeValueAsString(employeeCreationRequest);
 
-        // Giả lập kết quả cho sự kiện createCategory
+        // Giả lập kết quả cho sự kiện createEmployee
         when(employeeService.createEmployee(any())).thenReturn(employeeResponse);
 
         // Giả lập request, ko check ngày vì sợ sau này có thể thay đổi format, chủ yếu mình check những dữ liệu khác như statuscode, content.
