@@ -78,12 +78,28 @@ public class CustomerService {
     }
 
     public CustomerResponse updateCustomer(String customerId, CustomerUpdateRequest request) {
+
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        customerMapper.updateCustomer(customer, request);
+
+        if (request.getCustomername() != null && !request.getCustomername().isEmpty()) {
+            customer.setCustomername(request.getCustomername());
+        }
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+            customer.setEmail(request.getEmail());
+        }
+        if (request.getPhone() != null && !request.getPhone().isEmpty()) {
+            customer.setPhone(request.getPhone());
+        }
+        if (request.getAddress() != null && !request.getAddress().isEmpty()) {
+            customer.setAddress(request.getAddress());
+        }
+
         var updatedCustomer = customerRepository.save(customer);
+
         return customerMapper.toCustomerResponse(updatedCustomer);
     }
+
 
     public void deleteCustomer(String customerId) {
         if (!customerRepository.existsById(customerId)) {

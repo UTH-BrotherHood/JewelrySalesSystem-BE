@@ -85,6 +85,7 @@ public class CartService {
                     .productName(product.getName()) // Lấy tên sản phẩm từ product
                     .productImageUrl(product.getImageUrl()) // Lấy URL hình ảnh sản phẩm từ product
                     .quantity(request.getQuantity())
+
                     .price(product.getCostPrice())
                     .build();
 
@@ -128,7 +129,11 @@ public class CartService {
         }
 
         CartItem cartItem = cartItemOpt.get();
-        cartItem.setQuantity(cartItem.getQuantity() + 1); // Increase the quantity
+        cartItem.setQuantity(cartItem.getQuantity() + 1); // Tăng số lượng
+
+
+
+
 
         cartRepository.save(cart);
     }
@@ -147,13 +152,37 @@ public class CartService {
 
         CartItem cartItem = cartItemOpt.get();
         if (cartItem.getQuantity() > 1) {
-            cartItem.setQuantity(cartItem.getQuantity() - 1); // Decrease the quantity
+            cartItem.setQuantity(cartItem.getQuantity() - 1); // Giảm số lượng
+            // Tính lại tổng giá cho item
+
         } else {
-            // Remove the item if the quantity reaches zero
+            // Xóa item nếu số lượng bằng 0
             cart.getItems().remove(cartItem);
         }
 
+
         cartRepository.save(cart);
+    }
+
+
+    public CartResponse updateCartItemQuantity(String employeeId, String itemId, int newQuantity) {
+        // Check if the cart exists for the given employeeId
+        Cart cart = cartRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
+
+        // Find the cart item by itemId
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getItemId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new AppException(ErrorCode.ITEM_NOT_FOUND_IN_CART));
+
+        // Update the quantity of the item
+        cartItem.setQuantity(newQuantity);
+
+        // Save the updated cart
+        Cart updatedCart = cartRepository.save(cart);
+
+        return cartMapper.toCartResponse(updatedCart);
     }
 
 

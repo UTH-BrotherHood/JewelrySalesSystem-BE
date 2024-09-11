@@ -81,4 +81,19 @@ public class CartController {
         return apiResponse;
     }
 
+    @PatchMapping("/{employeeId}/update/{itemId}")
+    public ApiResponse<CartResponse> updateCartItemQuantity(
+            @PathVariable String employeeId,
+            @PathVariable String itemId,
+            @Valid @RequestBody CartItemRequest request) {
+        CartResponse cartResponse = cartService.updateCartItemQuantity(employeeId, itemId, request.getQuantity());
+        ApiResponse<CartResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Cart item quantity updated successfully");
+        apiResponse.setResult(cartResponse);
+        return apiResponse;
+    }
+
+
+
 }

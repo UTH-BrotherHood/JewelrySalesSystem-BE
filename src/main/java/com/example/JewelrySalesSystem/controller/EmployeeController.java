@@ -56,7 +56,7 @@ public class EmployeeController {
         return apiResponse;
     }
 
-    @PutMapping("/{employeeId}")
+    @PatchMapping("/{employeeId}")
     public ApiResponse<EmployeeResponse> updateUser(@PathVariable String employeeId, @RequestBody EmployeeUpdateRequest request){
         return ApiResponse.<EmployeeResponse>builder()
                 .result(employeeService.updateEmployee(employeeId, request))

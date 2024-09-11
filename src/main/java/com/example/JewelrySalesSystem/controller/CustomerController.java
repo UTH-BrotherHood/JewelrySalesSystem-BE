@@ -49,7 +49,7 @@ public class CustomerController {
         return apiResponse;
     }
 
-    @PutMapping("/{customerId}")
+    @PatchMapping("/{customerId}")
     public ApiResponse<CustomerResponse> updateCustomer(@PathVariable String customerId, @RequestBody @Valid CustomerUpdateRequest request) {
         ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>();
         CustomerResponse updatedCustomer = customerService.updateCustomer(customerId, request);
