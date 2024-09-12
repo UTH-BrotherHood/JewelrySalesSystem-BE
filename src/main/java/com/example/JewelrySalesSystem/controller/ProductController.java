@@ -34,7 +34,7 @@ public class ProductController {
         return apiResponse;
     }
 
-    @PutMapping("/{productId}")
+    @PatchMapping("/{productId}")
     public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestBody ProductUpdateRequest request) {
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
         ProductResponse product = productService.updateProduct(productId, request);
