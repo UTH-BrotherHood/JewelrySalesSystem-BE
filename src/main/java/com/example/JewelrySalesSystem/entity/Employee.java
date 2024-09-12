@@ -19,7 +19,7 @@ import java.util.Set;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String employeeId;
+    Long employeeId;
 
 
     String name;

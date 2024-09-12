@@ -42,7 +42,7 @@ public class AuthenticationService {
 
     @NonFinal
     @Value("${jwt.signerKey}")
-    protected String SIGNER_KEY;
+    public String SIGNER_KEY;
 
     public IntrospectResponse introspect(IntrospectRequest request)
             throws JOSEException, ParseException {
@@ -93,8 +93,8 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String generateToken(Employee employee) {
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+    public String generateToken(Employee employee) {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(employee.getUsername())
@@ -119,7 +119,7 @@ public class AuthenticationService {
         }
     }
 
-    private SignedJWT verifyToken(String token) throws JOSEException, ParseException {
+    public SignedJWT verifyToken(String token) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
         SignedJWT signedJWT = SignedJWT.parse(token);

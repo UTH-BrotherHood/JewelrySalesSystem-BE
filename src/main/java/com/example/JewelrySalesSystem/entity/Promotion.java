@@ -8,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -19,19 +18,19 @@ import java.util.UUID;
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
-    @Column(nullable = false, unique = true, updatable = false)
-    String promotionCode;
+    Integer promotionId;
 
     @Column(nullable = false)
-    String name;
+    String promotionDescription;
+
+    @Column(nullable = false)
+    LocalDateTime startDate;
+
+    @Column(nullable = false)
+    LocalDateTime endDate;
 
     @Column(nullable = false)
     BigDecimal discountPercentage;
-
-    LocalDateTime startDate;
-    LocalDateTime endDate;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
