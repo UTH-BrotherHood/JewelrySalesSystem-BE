@@ -13,14 +13,14 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerResponse {
-    String id;
+    String customerId;
     String customername;
     String email;
     String phone;
     String address;
     Integer rewardPoints;
     Set<RoleResponse> roles;
-
+    String rankLevel;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 

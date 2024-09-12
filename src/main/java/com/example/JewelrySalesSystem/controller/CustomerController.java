@@ -20,9 +20,9 @@ public class CustomerController {
 
 
     @PostMapping
-    public ApiResponse<Customer> createCustomer(@RequestBody @Valid CustomerCreationRequest request) {
-        ApiResponse<Customer> apiResponse = new ApiResponse<>();
-        Customer createCustomer = customerService.createCustomer(request);
+    public ApiResponse<CustomerResponse> createCustomer(@RequestBody @Valid CustomerCreationRequest request) {
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>();
+        CustomerResponse createCustomer = customerService.createCustomer(request);
         apiResponse.setCode(201);
         apiResponse.setMessage("Customer created successfully");
         apiResponse.setResult(createCustomer);
@@ -30,9 +30,9 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ApiResponse<List<Customer>> getCustomers() {
-        ApiResponse<List<Customer>> apiResponse = new ApiResponse<>();
-        List<Customer> customers = customerService.getCustomers();
+    public ApiResponse<List<CustomerResponse>> getCustomers() {
+        ApiResponse<List<CustomerResponse>> apiResponse = new ApiResponse<>();
+        List<CustomerResponse> customers = customerService.getCustomers();
         apiResponse.setCode(200);
         apiResponse.setMessage("Customers retrieved successfully");
         apiResponse.setResult(customers);
@@ -49,10 +49,10 @@ public class CustomerController {
         return apiResponse;
     }
 
-    @PutMapping("/{customerId}")
-    public ApiResponse<Customer> updateCustomer(@PathVariable String customerId, @RequestBody @Valid CustomerUpdateRequest request) {
-        ApiResponse<Customer> apiResponse = new ApiResponse<>();
-        Customer updatedCustomer = customerService.updateCustomer(customerId, request);
+    @PatchMapping("/{customerId}")
+    public ApiResponse<CustomerResponse> updateCustomer(@PathVariable String customerId, @RequestBody @Valid CustomerUpdateRequest request) {
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>();
+        CustomerResponse updatedCustomer = customerService.updateCustomer(customerId, request);
         apiResponse.setCode(200);
         apiResponse.setMessage("Customer updated successfully");
         apiResponse.setResult(updatedCustomer);
@@ -68,8 +68,24 @@ public class CustomerController {
         apiResponse.setResult("Customer has been deleted");
         return apiResponse;
     }
+    @GetMapping("/{customerId}/reward-points")
+    public ApiResponse<CustomerResponse> getCustomerRewardPoints(@PathVariable String customerId) {
+        CustomerResponse customer = customerService.getCustomer(customerId);
+        return ApiResponse.<CustomerResponse>builder()
+                .code(200)
+                .message("Customer reward points retrieved successfully")
+                .result(customer)
+                .build();
+    }
 
-
-
+    @GetMapping("/by-name")
+    public ApiResponse<CustomerResponse> getCustomerByName(@RequestParam("name") String customerName) {
+        ApiResponse<CustomerResponse> apiResponse = new ApiResponse<>();
+        CustomerResponse customer = customerService.getCustomerByName(customerName);
+        apiResponse.setCode(200);
+        apiResponse.setMessage("Customer retrieved successfully");
+        apiResponse.setResult(customer);
+        return apiResponse;
+    }
 
 }

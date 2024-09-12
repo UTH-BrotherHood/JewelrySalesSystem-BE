@@ -26,11 +26,27 @@ public class SalesOrder {
     String customerId;
     String employeeId;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id")
+    PaymentMethod paymentMethod;
+
+    String cartId;
+
     @Column(nullable = false)
     LocalDateTime orderDate;
 
     @Column(nullable = false)
-    BigDecimal totalAmount;
+    BigDecimal originalTotalAmount;
+
+    @Column(nullable = false)
+    BigDecimal discountedTotalAmount;
+
+    @Column(nullable = false)
+    BigDecimal discountedByRank;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "return_policy_id")
+    ReturnPolicy returnPolicy;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -42,3 +58,4 @@ public class SalesOrder {
 
 
 }
+

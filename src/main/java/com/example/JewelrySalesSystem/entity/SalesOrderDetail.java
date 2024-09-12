@@ -36,7 +36,8 @@ public class SalesOrderDetail {
     @Column(nullable = false)
     BigDecimal totalPrice;
 
-
+    // New field for price after discount
+    BigDecimal priceAfterDiscount;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

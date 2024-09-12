@@ -1,6 +1,7 @@
 package com.example.JewelrySalesSystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,12 +25,15 @@ public class Customer {
     String email;
     String phone;
     String address;
-    Integer rewardPoints;
 
     @ManyToMany
     Set<Role> roles;
 
 
+    Integer rewardPoints ;
+
+
+    String rankLevel;
 
     @CreationTimestamp
     LocalDateTime createdAt;

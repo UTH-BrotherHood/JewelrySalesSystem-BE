@@ -5,7 +5,6 @@ import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeCreat
 import com.example.JewelrySalesSystem.dto.request.EmployeeRequests.EmployeeUpdateRequest;
 import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
-
 import com.example.JewelrySalesSystem.entity.Role;
 import com.example.JewelrySalesSystem.exception.AppException;
 import com.example.JewelrySalesSystem.exception.ErrorCode;
@@ -18,7 +17,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +27,16 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class EmployeeService {
-    private EmployeeRepository employeeRepository;
-    private EmployeeMapper employeeMapper;
-    private PasswordEncoder passwordEncoder;
-    private RoleRepository roleRepository;
+    EmployeeRepository employeeRepository;
+    EmployeeMapper employeeMapper;
+    PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
-
-    public Employee createEmployee(EmployeeCreationRequest request) {
+    public EmployeeResponse createEmployee(EmployeeCreationRequest request) {
         if (employeeRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         Employee employee = employeeMapper.toEmployee(request);
-
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
         Role employeeRole = roleRepository.findByName(PredefinedRole.EMPLOYEE_ROLE)
@@ -52,13 +48,13 @@ public class EmployeeService {
 
         employee.setPhoneNumber(request.getPhoneNumber());
 
-        return employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return employeeMapper.toEmployeeResponse(savedEmployee);
     }
 
-
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeResponse> getEmployees() {
+        return employeeRepository.findAll().stream().map(employeeMapper::toEmployeeResponse).toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name or hasRole('ADMIN')")
@@ -66,8 +62,9 @@ public class EmployeeService {
         return employeeMapper.toEmployeeResponse(employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-    @PreAuthorize("hasAuthority('REJECT_POST')")
-    public EmployeeResponse getMyInfo(){
+
+
+    public EmployeeResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
@@ -81,7 +78,6 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         employeeMapper.updateEmployee(employee, request);
-
 
         var roles = roleRepository.findAllById(request.getRoles());
         employee.setRoles(new HashSet<>(roles));

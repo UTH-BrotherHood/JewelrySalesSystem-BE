@@ -28,7 +28,7 @@ public class CustomerCreationRequest {
     @NotBlank(message = "Address is required")
     String address;
 
-    Integer rewardPoints;
+
 }
 
 

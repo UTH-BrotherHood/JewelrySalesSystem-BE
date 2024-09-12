@@ -52,17 +52,6 @@ public class SalesOrderController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{orderId}")
-    public ApiResponse<SalesOrderResponse> updateSalesOrder(
-            @PathVariable String orderId,
-            @RequestBody SalesOrderUpdateRequest request) {
-        SalesOrderResponse salesOrderResponse = salesOrderService.updateSalesOrder(orderId, request);
-        ApiResponse<SalesOrderResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(200);
-        apiResponse.setMessage("Sales order updated successfully");
-        apiResponse.setResult(salesOrderResponse);
-        return apiResponse;
-    }
 
     @DeleteMapping("/{orderId}")
     public ApiResponse<Void> deleteSalesOrder(@PathVariable String orderId) {
@@ -103,4 +92,6 @@ public class SalesOrderController {
         apiResponse.setResult(salesOrderWithDetailsResponse);
         return apiResponse;
     }
+
+
 }

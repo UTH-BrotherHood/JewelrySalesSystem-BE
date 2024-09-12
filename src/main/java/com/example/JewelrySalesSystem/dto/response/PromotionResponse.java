@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PromotionResponse {
-    Integer promotionId;
-    String promotionDescription;
+    String promotionCode;
+    String name;
+    BigDecimal discountPercentage;
     LocalDateTime startDate;
     LocalDateTime endDate;
-    BigDecimal discountPercentage;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

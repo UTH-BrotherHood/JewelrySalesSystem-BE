@@ -15,7 +15,8 @@ public class SalesOrderDetailResponse {
     String productId;
     Integer quantity;
     BigDecimal unitPrice;
-    BigDecimal totalPrice;
+    BigDecimal totalPrice; // Giá tổng trước khi giảm giá
+    BigDecimal priceAfterDiscount; // Giá tổng sau khi giảm giá
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

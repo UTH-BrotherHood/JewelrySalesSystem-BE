@@ -17,8 +17,14 @@ public class SalesOrderResponse {
     String orderId;
     String customerId;
     String employeeId;
+    String cartId;
     LocalDateTime orderDate;
-    BigDecimal totalAmount;
+    BigDecimal originalTotalAmount;
+    BigDecimal discountedTotalAmount;
+    BigDecimal discountedByRank;
+    ReturnPolicyResponse returnPolicy;
+    PaymentMethodResponse paymentMethod;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+
 }

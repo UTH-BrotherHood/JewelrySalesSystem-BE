@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -36,10 +37,13 @@ public class SecurityConfig {
             "/products/{productId}",
             "/sales-orders",
             "/statistics",
-            "/promotions/{promotionId}",
+            "/promotions/{promotionCode}",
             "/return-policy",
             "/categories",
 
+//            "customers/by-name",
+//            "cart/{customerId}"
+//            "/h2-console/**"
     };
 
     private static final String[] ADMIN_ENDPOINTS = {
@@ -71,6 +75,7 @@ public class SecurityConfig {
                 request
                         .requestMatchers(HttpMethod.POST, "/employees").permitAll()
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
@@ -89,6 +94,9 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+//        httpSecurity.headers(httpSecurityHeadersConfigurer -> {
+//            httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);
+//        });
 
         return httpSecurity.build();
     }

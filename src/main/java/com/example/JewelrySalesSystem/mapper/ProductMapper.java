@@ -10,9 +10,9 @@ import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface ProductMapper {
-    @Mapping(source = "categoryName", target = "categoryName")
+
     Product toProduct(ProductCreationRequest request);
-    @Mapping(source = "categoryName", target = "categoryName")
+
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);
 
     ProductResponse toProductResponse(Product product);

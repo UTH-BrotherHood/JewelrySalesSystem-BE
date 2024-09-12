@@ -7,21 +7,22 @@ import com.example.JewelrySalesSystem.dto.response.EmployeeResponse;
 import com.example.JewelrySalesSystem.entity.Employee;
 import com.example.JewelrySalesSystem.service.EmployeeService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
-    @Autowired
-    private EmployeeService employeeService;
+
+    private final EmployeeService employeeService;
 
     @PostMapping
-    public ApiResponse<Employee> createEmployee(@RequestBody @Valid EmployeeCreationRequest request) {
-        ApiResponse<Employee> apiResponse = new ApiResponse<>();
-        Employee createEmployee = employeeService.createEmployee(request);
+    public ApiResponse<EmployeeResponse> createEmployee(@RequestBody @Valid EmployeeCreationRequest request) {
+        ApiResponse<EmployeeResponse> apiResponse = new ApiResponse<>();
+        EmployeeResponse createEmployee = employeeService.createEmployee(request);
         apiResponse.setCode(201);
         apiResponse.setMessage("Employee created successfully");
         apiResponse.setResult(createEmployee);
@@ -29,9 +30,9 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ApiResponse<List<Employee>> getEmployees() {
-        ApiResponse<List<Employee>> apiResponse = new ApiResponse<>();
-        List<Employee> employees = employeeService.getEmployees();
+    public ApiResponse<List<EmployeeResponse>> getEmployees() {
+        ApiResponse<List<EmployeeResponse>> apiResponse = new ApiResponse<>();
+        List<EmployeeResponse> employees = employeeService.getEmployees();
         apiResponse.setCode(200);
         apiResponse.setMessage("Employees retrieved successfully");
         apiResponse.setResult(employees);
@@ -39,7 +40,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/myInfo")
-    ApiResponse<EmployeeResponse> getMyInfo(){
+    public ApiResponse<EmployeeResponse> getMyInfo(){
         return ApiResponse.<EmployeeResponse>builder()
                 .result(employeeService.getMyInfo())
                 .build();
@@ -55,13 +56,12 @@ public class EmployeeController {
         return apiResponse;
     }
 
-    @PutMapping("/{employeeId}")
-    ApiResponse<EmployeeResponse> updateUser(@PathVariable String employeeId, @RequestBody EmployeeUpdateRequest request){
+    @PatchMapping("/{employeeId}")
+    public ApiResponse<EmployeeResponse> updateUser(@PathVariable String employeeId, @RequestBody EmployeeUpdateRequest request){
         return ApiResponse.<EmployeeResponse>builder()
                 .result(employeeService.updateEmployee(employeeId, request))
                 .build();
     }
-
 
     @DeleteMapping("/{employeeId}")
     public ApiResponse<String> deleteEmployee(@PathVariable String employeeId) {

@@ -15,7 +15,7 @@ public class EmployeeResponse {
     String employeeId;
     String name;
     String username;
-
+    String phoneNumber;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
     Set<RoleResponse> roles;

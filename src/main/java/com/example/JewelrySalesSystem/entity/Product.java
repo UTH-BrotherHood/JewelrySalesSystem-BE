@@ -23,11 +23,12 @@ public class Product {
     String productId;
 
 
-    String categoryName;
+    String categoryId;
 
 
     String name;
 
+    String imageUrl;
 
     String description;
 
@@ -36,7 +37,6 @@ public class Product {
 
 
     BigDecimal weight;
-
 
     BigDecimal laborCost;
 
